@@ -51,7 +51,7 @@ src/
 
 ## API Integration
 
-The frontend communicates with the backend API at `http://localhost:8000`:
+The frontend communicates with the backend API at `http://localhost:8000` (Backend is a seperate repository):
 
 - `GET /api/v1/trades` - Fetch all trades
 - `POST /api/v1/trades` - Create a new trade
