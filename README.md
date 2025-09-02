@@ -39,5 +39,3 @@ trading-journal/
 ├── backend/          # FastAPI backend
 └── frontend/         # React frontend
 ```
-
-Built for traders who want data-driven insights.
