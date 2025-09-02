@@ -30,7 +30,7 @@ A full-stack trading journal built with React and FastAPI to track and analyze t
    npm run dev
    ```
 
-3. **Access**: http://localhost:5173
+3. **Access**: http://localhost:3000
 
 ## Project Structure
 
