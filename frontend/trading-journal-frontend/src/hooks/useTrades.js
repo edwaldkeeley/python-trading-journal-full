@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 // Fetch all trades with pagination
 export const useTrades = (limit = 500, offset = 0) => {
@@ -152,29 +152,7 @@ export const useCloseTrade = () => {
       const quantity = parseFloat(trade.quantity);
       const lotSize = parseFloat(trade.lot_size || 1);
 
-      // Debug: Check if values are parsed correctly
-      console.log('Raw values from trade:', {
-        entry_price: trade.entry_price,
-        take_profit: trade.take_profit,
-        stop_loss: trade.stop_loss,
-        quantity: trade.quantity
-      });
 
-      console.log('Parsed values:', {
-        entryPrice,
-        takeProfit,
-        stopLoss,
-        quantity
-      });
-
-      console.log('Smart Exit Debug:', {
-        side: trade.side,
-        entryPrice,
-        exitPrice: adjustedExitPrice,
-        takeProfit,
-        stopLoss,
-        quantity
-      });
 
       if (trade.side === 'buy') {
         // For buy trades (long positions)
@@ -182,12 +160,12 @@ export const useCloseTrade = () => {
           // If exit price is at or above take profit, use take profit price
           adjustedExitPrice = takeProfit;
           exitReason = 'take_profit';
-          console.log('BUY: Take profit hit, adjusting to:', adjustedExitPrice);
+
         } else if (stopLoss && adjustedExitPrice <= stopLoss) {
           // If exit price is at or below stop loss, use stop loss price
           adjustedExitPrice = stopLoss;
           exitReason = 'stop_loss';
-          console.log('BUY: Stop loss hit, adjusting to:', adjustedExitPrice);
+
         }
       } else {
         // For sell trades (short positions)
@@ -195,67 +173,39 @@ export const useCloseTrade = () => {
           // If exit price is at or below take profit, use take profit price
           adjustedExitPrice = takeProfit;
           exitReason = 'take_profit';
-          console.log('SELL: Take profit hit, adjusting to:', adjustedExitPrice);
+
         } else if (stopLoss && adjustedExitPrice >= stopLoss) {
           // If exit price is at or above stop loss, use stop loss price
           adjustedExitPrice = stopLoss;
           exitReason = 'stop_loss';
-          console.log('SELL: Stop loss hit, adjusting to:', adjustedExitPrice);
+
         }
       }
 
-      console.log('Final adjusted exit price:', adjustedExitPrice, 'Reason:', exitReason);
+
 
             // Calculate P&L based on adjusted exit price
       let pnl = 0;
 
-      console.log('P&L Calculation Inputs:', {
-        side: trade.side,
-        adjustedExitPrice,
-        entryPrice,
-        quantity,
-        exitPriceOriginal: exitPrice
-      });
+
 
       if (trade.side === 'buy') {
         // For buy trades (long positions): profit when exit > entry
         const priceDifference = adjustedExitPrice - entryPrice;
         pnl = priceDifference * quantity * lotSize;
-        console.log('BUY P&L calculation:', {
-          exitPrice: adjustedExitPrice,
-          entryPrice,
-          priceDifference,
-          quantity,
-          lotSize,
-          calculation: `${priceDifference} × ${quantity} × ${lotSize} = ${pnl}`,
-          pnl
-        });
+
       } else {
         // For sell trades (short positions): profit when exit < entry
         const priceDifference = entryPrice - adjustedExitPrice;
         pnl = priceDifference * quantity * lotSize;
-        console.log('SELL P&L calculation:', {
-          exitPrice: adjustedExitPrice,
-          entryPrice,
-          priceDifference,
-          quantity,
-          lotSize,
-          calculation: `${priceDifference} × ${quantity} × ${lotSize} = ${pnl}`,
-          pnl
-        });
+
       }
 
-      console.log('Final P&L calculation result:', pnl);
+
 
       // Additional validation
       if (isNaN(pnl) || !isFinite(pnl)) {
-        console.error('Invalid P&L calculation detected:', {
-          pnl,
-          adjustedExitPrice,
-          entryPrice,
-          quantity,
-          side: trade.side
-        });
+
         throw new Error('Invalid P&L calculation - check input values');
       }
 
@@ -267,7 +217,7 @@ export const useCloseTrade = () => {
         exit_reason: exitReason
       };
 
-      console.log('Sending update data to backend:', updateData);
+
 
       const response = await fetch(`${API_BASE_URL}/trades/${tradeId}`, {
         method: 'PUT',
@@ -279,12 +229,12 @@ export const useCloseTrade = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Backend error response:', errorText);
+
         throw new Error(`Failed to close trade: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const result = await response.json();
-      console.log('Backend response:', result);
+
       return result;
     },
     onSuccess: (updatedTrade) => {

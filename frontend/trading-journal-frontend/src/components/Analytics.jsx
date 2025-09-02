@@ -27,8 +27,8 @@ const Analytics = ({ trades }) => {
   const calculateAnalytics = () => {
     if (!trades || trades.length === 0) return null;
 
-    const closedTrades = trades.filter(trade => trade.is_closed);
-    const openTrades = trades.filter(trade => !trade.is_closed);
+    const closedTrades = trades.filter(trade => trade.exit_price && trade.exit_time);
+    const openTrades = trades.filter(trade => !trade.exit_price || !trade.exit_time);
 
     // Monthly P&L data
     const monthlyPnL = {};

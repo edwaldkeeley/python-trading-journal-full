@@ -32,7 +32,7 @@ function AppContent() {
   const handleDeleteTrade = async (tradeId) => {
     try {
       await deleteTradeMutation.mutateAsync(tradeId)
-      console.log('Trade deleted successfully:', tradeId)
+
     } catch (error) {
       console.error('Error deleting trade:', error)
       throw error
@@ -42,7 +42,7 @@ function AppContent() {
   const handleCloseTrade = async ({ tradeId, exitPrice }) => {
     try {
       await closeTradeMutation.mutateAsync({ tradeId, exitPrice })
-      console.log('Trade closed successfully:', { tradeId, exitPrice })
+
     } catch (error) {
       console.error('Error closing trade:', error)
       throw error
@@ -51,7 +51,7 @@ function AppContent() {
 
   const calculateStats = () => {
     const totalTrades = trades.length
-    const closedTrades = trades.filter(trade => trade.is_closed).length
+    const closedTrades = trades.filter(trade => trade.exit_price && trade.exit_time).length
     const openTrades = totalTrades - closedTrades
     const totalPnL = trades.reduce((sum, trade) => sum + (trade.pnl || 0), 0)
     const winningTrades = trades.filter(trade => trade.pnl && trade.pnl > 0).length
