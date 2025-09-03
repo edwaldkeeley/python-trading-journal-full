@@ -1,4 +1,4 @@
-# �� Trading Journal
+# Trading Journal
 
 A modern trading journal to track, analyze, and improve your trading performance.
 
