@@ -152,6 +152,18 @@ export const useCloseTrade = () => {
       const quantity = parseFloat(trade.quantity);
       const lotSize = parseFloat(trade.lot_size || 1);
 
+      // Debug: Log all values being used in P&L calculation
+      console.log('=== P&L CALCULATION DEBUG ===');
+      console.log('Trade ID:', trade.id);
+      console.log('Side:', trade.side);
+      console.log('Entry Price:', entryPrice);
+      console.log('Exit Price (input):', exitPrice);
+      console.log('Adjusted Exit Price:', adjustedExitPrice);
+      console.log('Quantity:', quantity);
+      console.log('Lot Size:', lotSize);
+      console.log('Take Profit:', takeProfit);
+      console.log('Stop Loss:', stopLoss);
+
 
 
       if (trade.side === 'buy') {
@@ -192,20 +204,36 @@ export const useCloseTrade = () => {
       if (trade.side === 'buy') {
         // For buy trades (long positions): profit when exit > entry
         const priceDifference = adjustedExitPrice - entryPrice;
-        pnl = priceDifference * quantity * lotSize;
+        const gross = priceDifference * quantity * lotSize;
+        pnl = gross - trade.fees; // Subtract fees like backend
+
+        console.log(`P&L Calculation (BUY): ${priceDifference} × ${quantity} × ${lotSize} = ${gross} (gross) - ${trade.fees} (fees) = ${pnl}`);
+
+        // Ensure P&L is a valid number
+        if (isNaN(pnl) || !isFinite(pnl)) {
+          console.error('Invalid P&L calculation detected:', { priceDifference, quantity, lotSize, gross, fees: trade.fees, pnl });
+          pnl = 0;
+        }
 
       } else {
         // For sell trades (short positions): profit when exit < entry
         const priceDifference = entryPrice - adjustedExitPrice;
-        pnl = priceDifference * quantity * lotSize;
+        const gross = priceDifference * quantity * lotSize;
+        pnl = gross - trade.fees; // Subtract fees like backend
 
+        console.log(`P&L Calculation (SELL): ${priceDifference} × ${quantity} × ${lotSize} = ${gross} (gross) - ${trade.fees} (fees) = ${pnl}`);
+
+        // Ensure P&L is a valid number
+        if (isNaN(pnl) || !isFinite(pnl)) {
+          console.error('Invalid P&L calculation detected:', { priceDifference, quantity, lotSize, gross, fees: trade.fees, pnl });
+          pnl = 0;
+        }
       }
 
 
 
-      // Additional validation
+      // Final validation
       if (isNaN(pnl) || !isFinite(pnl)) {
-
         throw new Error('Invalid P&L calculation - check input values');
       }
 
@@ -214,8 +242,13 @@ export const useCloseTrade = () => {
         exit_price: adjustedExitPrice,
         exit_time: new Date().toISOString(),
         pnl: pnl,
-        exit_reason: exitReason
+        exit_reason: exitReason,
+        lot_size: lotSize  // Include lot_size to ensure it's preserved
       };
+
+      console.log('=== FINAL P&L RESULT ===');
+      console.log('Final P&L:', pnl);
+      console.log('Update Data:', updateData);
 
 
 
@@ -257,7 +290,7 @@ export const useCloseTrade = () => {
       // Also invalidate to ensure we have the latest data
       queryClient.invalidateQueries({ queryKey: ['trades'] });
     },
-    onError: (error) => {
+    onError: () => {
       // If there's an error, invalidate to refetch fresh data
       queryClient.invalidateQueries({ queryKey: ['trades'] });
     },

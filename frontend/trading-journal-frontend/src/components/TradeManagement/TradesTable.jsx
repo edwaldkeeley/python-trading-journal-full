@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import CloseTradeModal from './CloseTradeModal';
 import DeleteTradeModal from './DeleteTradeModal';
-import Pagination from './Pagination';
+import NotesModal from './NotesModal';
+import { Pagination } from '../UI';
 
 const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
   const [closeModalTrade, setCloseModalTrade] = useState(null);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [deleteModalTrade, setDeleteModalTrade] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [notesModalTrade, setNotesModalTrade] = useState(null);
+  const [showNotesModal, setShowNotesModal] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,13 +84,19 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                 <th>Stop Loss</th>
                 <th>Take Profit</th>
                 <th>Grade</th>
+                <th>Notes</th>
                 <th>Exit Price</th>
-                 <th>Exit Reason</th>
-                 <th>Entry Time</th>
-                 <th>Exit Time</th>
-                 <th>P&L</th>
-                 <th>Status</th>
-                 <th>Actions</th>
+                <th>Exit Reason</th>
+                <th>Entry Time</th>
+                <th>Exit Time</th>
+                <th>
+                  P&L
+                  <span className="info-tooltip" title="P&L = (Exit Price - Entry Price) × Quantity × Lot Size">
+                    ℹ️
+                  </span>
+                </th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -98,10 +107,31 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                   <td>{trade.quantity}</td>
                   <td>{trade.lot_size}</td>
                   <td>${trade.entry_price}</td>
-                                     <td>${trade.stop_loss}</td>
+                  <td>${trade.stop_loss}</td>
                   <td>${trade.take_profit}</td>
                   <td className={`checklist-grade ${trade.checklist_grade || 'no-grade'}`}>
                     {trade.checklist_grade || '-'}
+                  </td>
+                  <td className="notes-cell">
+                    {trade.notes ? (
+                      <div className="notes-content">
+                        <span className="notes-preview">
+                          {trade.notes.length > 30 ? `${trade.notes.substring(0, 30)}...` : trade.notes}
+                        </span>
+                        {trade.notes.length > 30 && (
+                          <span
+                            className="notes-expand"
+                            title="Click to view full notes"
+                            onClick={() => {
+                              setNotesModalTrade(trade);
+                              setShowNotesModal(true);
+                            }}
+                          >
+                            📝
+                          </span>
+                        )}
+                      </div>
+                    ) : '-'}
                   </td>
                   <td>{trade.exit_price ? `$${trade.exit_price}` : '-'}</td>
                    <td className={`exit-reason ${trade.exit_reason || ''}`}>
@@ -110,7 +140,14 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                    <td>{new Date(trade.entry_time).toLocaleDateString()}</td>
                   <td>{trade.exit_time ? new Date(trade.exit_time).toLocaleDateString() : '-'}</td>
                   <td className={`pnl ${trade.pnl >= 0 ? 'positive' : 'negative'}`}>
-                    {trade.pnl ? `$${trade.pnl.toFixed(2)}` : '-'}
+                    {trade.pnl ? (
+                      <span title={`P&L Breakdown: ${trade.side === 'buy' ?
+                        `(${trade.exit_price} - ${trade.entry_price}) × ${trade.quantity} × ${trade.lot_size} = $${trade.pnl.toFixed(2)}` :
+                        `(${trade.entry_price} - ${trade.exit_price}) × ${trade.quantity} × ${trade.lot_size} = $${trade.pnl.toFixed(2)}`
+                      }`}>
+                        ${trade.pnl.toFixed(2)}
+                      </span>
+                    ) : '-'}
                   </td>
                   <td className={`status ${trade.is_closed ? 'closed' : 'open'}`}>
                     {trade.is_closed ? 'Closed' : 'Open'}
@@ -167,6 +204,16 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
         onConfirm={handleDeleteConfirm}
         trade={deleteModalTrade}
         isLoading={false}
+              />
+
+      <NotesModal
+        isOpen={showNotesModal}
+        onClose={() => {
+          setShowNotesModal(false);
+          setNotesModalTrade(null);
+        }}
+        notes={notesModalTrade?.notes}
+        tradeInfo={notesModalTrade}
       />
     </>
   );
