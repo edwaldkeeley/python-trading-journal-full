@@ -1,41 +1,41 @@
-# 📈 Trading Journal
+# �� Trading Journal
 
-A full-stack trading journal built with React and FastAPI to track and analyze trading performance.
+A modern trading journal to track, analyze, and improve your trading performance.
 
-## Features
+## ✨ Features
 
-- **Trade Management**: Add, close, and delete trades with validation
-- **Trading Checklist**: 6-point quality assessment with smart grading
-- **Analytics**: P&L charts, win rate, max drawdown, grade distribution
-- **Lot Size Support**: Different lot sizes for stocks, crypto, forex
-- **Pagination**: Handle large datasets efficiently
+- **Trade Management**: Add, close, delete trades with smart exit logic
+- **Trading Checklist**: Quality assessment with A-D grading system
+- **Analytics Dashboard**: P&L charts, win rate, max drawdown, grade distribution
+- **Lot Size Support**: Flexible sizing for different markets
+- **Real-time Updates**: Instant trade updates with React Query
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Backend**: FastAPI + PostgreSQL + Docker
 - **Frontend**: React 19 + Vite + React Query
+- **Backend**: FastAPI + PostgreSQL + Docker
 
-## Quick Start
+## 🚀 Quick Start
 
-1. **Start backend**
+1. **Backend** (FastAPI)
    ```bash
    cd backend
-   docker-compose -f docker-compose.dev.yml up -d
+   docker-compose up -d
    ```
 
-2. **Start frontend**
+2. **Frontend** (React)
    ```bash
    cd frontend/trading-journal-frontend
    npm install
    npm run dev
    ```
 
-3. **Access**: http://localhost:3000
+3. **Open**: http://localhost:3000
 
-## Project Structure
+## 📁 Structure
 
 ```
 trading-journal/
-├── backend/          # FastAPI backend
-└── frontend/         # React frontend
+├── backend/          # FastAPI + PostgreSQL
+└── frontend/         # React + Vite
 ```
