@@ -9,6 +9,8 @@ A modern trading journal to track, analyze, and improve your trading performance
 - **Analytics Dashboard**: P&L charts, win rate, max drawdown, grade distribution
 - **Lot Size Support**: Flexible sizing for different markets
 - **Real-time Updates**: Instant trade updates with React Query
+- **Light/Dark Mode**: Complete theme switching with persistent user preferences
+- **Advanced Metrics**: Comprehensive performance analytics and trade quality scoring
 
 ## 🛠️ Tech Stack
 

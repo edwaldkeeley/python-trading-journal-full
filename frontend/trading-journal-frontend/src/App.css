@@ -1,4 +1,6 @@
 /* Reset and base styles */
+
+/* score-display */
 * {
   margin: 0;
   padding: 0;
@@ -74,6 +76,12 @@ body {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .header h1 {
@@ -241,12 +249,14 @@ body {
   color: #0c5460;
 }
 
-.trades-table td:nth-child(5) { /* Stop Loss column */
+.trades-table td:nth-child(5) {
+  /* Stop Loss column */
   color: #e74c3c;
   font-weight: 500;
 }
 
-.trades-table td:nth-child(6) { /* Take Profit column */
+.trades-table td:nth-child(6) {
+  /* Take Profit column */
   color: #27ae60;
   font-weight: 500;
 }
@@ -288,28 +298,28 @@ body {
   min-width: 30px;
 }
 
-.checklist-grade.A+,
+.checklist-grade.A +,
 .checklist-grade.A,
 .checklist-grade.A- {
   background: #d4edda;
   color: #155724;
 }
 
-.checklist-grade.B+,
+.checklist-grade.B +,
 .checklist-grade.B,
 .checklist-grade.B- {
   background: #d1ecf1;
   color: #0c5460;
 }
 
-.checklist-grade.C+,
+.checklist-grade.C +,
 .checklist-grade.C,
 .checklist-grade.C- {
   background: #fff3cd;
   color: #856404;
 }
 
-.checklist-grade.D+,
+.checklist-grade.D +,
 .checklist-grade.D,
 .checklist-grade.D- {
   background: #f8d7da;
@@ -513,6 +523,12 @@ body {
   margin: 20px 0;
 }
 
+/* Remove hardcoded colors to allow theme overrides */
+[data-theme='dark'] .trading-checklist {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
 .trading-checklist h4 {
   margin: 0 0 16px 0;
   color: #495057;
@@ -528,6 +544,14 @@ body {
   background: white;
   border-radius: 8px;
   border: 2px solid #dee2e6;
+  color: #2c3e50;
+}
+
+/* Remove hardcoded colors to allow theme overrides */
+[data-theme='dark'] .checklist-score {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
 }
 
 .score-label {
@@ -576,6 +600,14 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Remove hardcoded colors to allow theme overrides */
+[data-theme='dark'] .score-display {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 .score-display .score-header {
   display: flex;
   justify-content: space-between;
@@ -587,6 +619,11 @@ body {
   font-size: 16px;
   font-weight: 600;
   color: #2c3e50;
+}
+
+/* Dark mode score label */
+[data-theme='dark'] .score-display .score-label {
+  color: var(--text-primary) !important;
 }
 
 .score-display .score-value {
@@ -624,6 +661,12 @@ body {
   margin-top: 8px;
 }
 
+/* Dark mode score message */
+[data-theme='dark'] .score-display .score-message {
+  color: var(--text-secondary) !important;
+  background: var(--bg-tertiary) !important;
+}
+
 .checklist-sections {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -638,12 +681,23 @@ body {
   margin-top: 16px;
 }
 
+/* Remove hardcoded colors to allow theme overrides */
+[data-theme='dark'] .checklist-section {
+  background: var(--bg-tertiary) !important;
+  border: 2px solid var(--border-light) !important;
+}
+
 .checklist-section h3 {
   margin: 0 0 16px 0;
   color: #2c3e50;
   font-size: 16px;
   font-weight: 600;
   text-align: center;
+}
+
+/* Dark mode checklist section heading */
+[data-theme='dark'] .checklist-section h3 {
+  color: var(--text-primary) !important;
 }
 
 .checklist-items {
@@ -662,6 +716,16 @@ body {
   border-radius: 8px;
   border: 2px solid #e9ecef;
   background: white;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Remove hardcoded colors to allow theme overrides */
+[data-theme='dark'] .checklist-item {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-light) !important;
 }
 
 .checklist-item:hover {
@@ -677,14 +741,27 @@ body {
   gap: 12px;
   width: 100%;
   cursor: pointer;
+  pointer-events: none;
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   width: 20px;
   height: 20px;
   accent-color: #3498db;
   cursor: pointer;
   flex-shrink: 0;
+  background-color: white;
+  border: 2px solid #dee2e6;
+  border-radius: 4px;
+  pointer-events: auto;
+}
+
+/* Dark mode checkbox base styling */
+[data-theme='dark'] .checkbox-label input[type='checkbox'] {
+  accent-color: var(--accent-primary);
+  background-color: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
 }
 
 .checklist-content {
@@ -702,6 +779,11 @@ body {
   user-select: none;
 }
 
+/* Dark mode checklist label */
+[data-theme='dark'] .checklist-label {
+  color: var(--text-primary) !important;
+}
+
 .checklist-description {
   font-size: 12px;
   color: #6c757d;
@@ -709,11 +791,19 @@ body {
   user-select: none;
 }
 
-.checklist-item input[type="checkbox"]:checked ~ .checklist-content .checklist-label {
+/* Dark mode checklist description */
+[data-theme='dark'] .checklist-description {
+  color: var(--text-muted) !important;
+}
+
+.checklist-item
+  input[type='checkbox']:checked
+  ~ .checklist-content
+  .checklist-label {
   color: #3498db;
 }
 
-.checklist-item input[type="checkbox"]:checked {
+.checklist-item input[type='checkbox']:checked {
   border-color: #3498db;
   background-color: #e3f2fd;
 }
@@ -832,7 +922,8 @@ body {
   border-radius: 10px;
   font-size: 14px;
   transition: all 0.2s ease;
-  background: #f8f9fa;
+  background: white;
+  color: #2c3e50;
 }
 
 .form-group input:focus,
@@ -844,12 +935,12 @@ body {
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-.form-group input[name="stop_loss"]:focus {
+.form-group input[name='stop_loss']:focus {
   border-color: #e74c3c;
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
 
-.form-group input[name="take_profit"]:focus {
+.form-group input[name='take_profit']:focus {
   border-color: #27ae60;
   box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
 }
@@ -873,10 +964,265 @@ body {
   font-weight: 600;
 }
 
+/* Light mode form styles */
+[data-theme='light'] .form-group label {
+  color: #2c3e50;
+}
+
+[data-theme='light'] .form-group input,
+[data-theme='light'] .form-group select,
+[data-theme='light'] .form-group textarea {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #2c3e50;
+}
+
+[data-theme='light'] .form-group input:focus,
+[data-theme='light'] .form-group select:focus,
+[data-theme='light'] .form-group textarea:focus {
+  background: white;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+[data-theme='light'] .form-help {
+  color: #6c757d;
+}
+
+[data-theme='light'] .form-help strong {
+  color: #495057;
+}
+
+[data-theme='light'] .form-group input::placeholder,
+[data-theme='light'] .form-group textarea::placeholder {
+  color: #6c757d;
+}
+
+/* Light mode modal styles */
+[data-theme='light'] .modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='light'] .modal {
+  background: white;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] .modal h2 {
+  color: #2c3e50;
+}
+
+/* Light mode button styles */
+[data-theme='light'] .add-trade-btn {
+  background: #3498db;
+  color: white;
+}
+
+[data-theme='light'] .add-trade-btn:hover {
+  background: #2980b9;
+}
+
+[data-theme='light'] .action-btn {
+  background: #3498db;
+  color: white;
+}
+
+[data-theme='light'] .action-btn.close-btn {
+  background: #27ae60;
+}
+
+[data-theme='light'] .action-btn.delete-btn {
+  background: #e74c3c;
+}
+
+/* Light mode pagination styles */
+[data-theme='light'] .pagination {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+[data-theme='light'] .pagination-info {
+  color: #6c757d;
+}
+
+[data-theme='light'] .items-per-page label {
+  color: #495057;
+}
+
+[data-theme='light'] .items-per-page select {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #2c3e50;
+}
+
+[data-theme='light'] .pagination-btn {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #2c3e50;
+}
+
+[data-theme='light'] .pagination-btn:hover:not(:disabled) {
+  border-color: #3498db;
+  color: #3498db;
+  background: #f8f9fa;
+}
+
+[data-theme='light'] .pagination-btn.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+
+/* Light mode checklist styles */
+[data-theme='light'] .trading-checklist {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+[data-theme='light'] .trading-checklist h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+[data-theme='light'] .checklist-score {
+  background: white !important;
+  border: 2px solid #dee2e6 !important;
+  color: #2c3e50 !important;
+}
+
+/* More specific light mode checklist score selector */
+[data-theme='light'] .trading-checklist .checklist-score {
+  background: white !important;
+  border: 2px solid #dee2e6 !important;
+  color: #2c3e50 !important;
+}
+
+[data-theme='light'] .score-label {
+  color: #6c757d;
+}
+
+[data-theme='light'] .score-message {
+  color: #495057;
+}
+
+[data-theme='light'] .score-value {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Light mode score-display */
+[data-theme='light'] .score-display {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  color: #2c3e50 !important;
+}
+
+[data-theme='light'] .score-display .score-label {
+  color: #2c3e50 !important;
+}
+
+[data-theme='light'] .score-display .score-message {
+  background: #f8f9fa !important;
+  color: #495057 !important;
+}
+
+[data-theme='light'] .checklist-section {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+[data-theme='light'] .checklist-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+[data-theme='light'] .checklist-section h3 {
+  color: #2c3e50;
+}
+
+[data-theme='light'] .checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+[data-theme='light'] .checklist-item {
+  background: white;
+  border: 2px solid #dee2e6;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme='light'] .checklist-item:hover {
+  border-color: #3498db;
+  background-color: #f8f9fa;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+[data-theme='light'] .checklist-item:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+[data-theme='light'] .checklist-item:active {
+  outline: none;
+  transform: translateY(0);
+}
+
+[data-theme='light'] .checklist-label {
+  color: #2c3e50;
+}
+
+[data-theme='light'] .checklist-description {
+  color: #6c757d;
+}
+
+[data-theme='light']
+  .checklist-item
+  input[type='checkbox']:checked
+  ~ .checklist-content
+  .checklist-label {
+  color: #3498db;
+}
+
+[data-theme='light'] .checklist-item .checklist-content {
+  padding: 0;
+  background-color: transparent;
+}
+
+[data-theme='light'] .checklist-item input[type='checkbox']:checked {
+  border-color: #3498db;
+  background-color: #e3f2fd;
+}
+
+[data-theme='light'] .checklist-item.checked {
+  background-color: rgba(52, 152, 219, 0.05);
+  border-radius: 8px;
+}
+
 /* Required field indicators */
-.form-group label[for*="stop_loss"]::after,
-.form-group label[for*="take_profit"]::after {
-  content: " *";
+.form-group label[for*='stop_loss']::after,
+.form-group label[for*='take_profit']::after {
+  content: ' *';
   color: #e74c3c;
   font-weight: bold;
 }
@@ -1006,23 +1352,23 @@ body {
   min-width: 120px;
 }
 
-.form-actions button[type="button"] {
+.form-actions button[type='button'] {
   background: #6c757d;
   color: white;
 }
 
-.form-actions button[type="button"]:hover {
+.form-actions button[type='button']:hover {
   background: #5a6268;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
-.form-actions button[type="submit"] {
+.form-actions button[type='submit'] {
   background: #27ae60;
   color: white;
 }
 
-.form-actions button[type="submit"]:hover {
+.form-actions button[type='submit']:hover {
   background: #229954;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
@@ -1255,10 +1601,7 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: conic-gradient(
-    #3498db 0deg 90deg,
-    #e9ecef 90deg 360deg
-  );
+  background: conic-gradient(#3498db 0deg 90deg, #e9ecef 90deg 360deg);
   position: relative;
 }
 
@@ -1270,17 +1613,11 @@ body {
 }
 
 .pie-segment.closed {
-  background: conic-gradient(
-    #3498db 0deg 90deg,
-    transparent 90deg 360deg
-  );
+  background: conic-gradient(#3498db 0deg 90deg, transparent 90deg 360deg);
 }
 
 .pie-segment.open {
-  background: conic-gradient(
-    transparent 0deg 90deg,
-    #e9ecef 90deg 360deg
-  );
+  background: conic-gradient(transparent 0deg 90deg, #e9ecef 90deg 360deg);
 }
 
 .legend {
@@ -1575,3 +1912,1134 @@ body {
 }
 
 /* Trade Distribution */
+
+/* ===== DARK MODE STYLES ===== */
+[data-theme='dark'] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #808080;
+  --border-color: #404040;
+  --border-light: #333333;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --accent-primary: #3498db;
+  --accent-success: #27ae60;
+  --accent-danger: #e74c3c;
+  --accent-warning: #f39c12;
+  --accent-info: #17a2b8;
+}
+
+[data-theme='light'] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #2c3e50;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --border-light: #e9ecef;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --accent-primary: #3498db;
+  --accent-success: #27ae60;
+  --accent-danger: #e74c3c;
+  --accent-warning: #f39c12;
+  --accent-info: #17a2b8;
+}
+
+/* Dark mode base styles */
+[data-theme='dark'] body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .app {
+  background: var(--bg-primary);
+}
+
+[data-theme='dark'] .dashboard {
+  background: var(--bg-primary);
+}
+
+/* Dark mode header */
+[data-theme='dark'] .header {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+[data-theme='dark'] .header h1 {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+[data-theme='light'] .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Dark mode summary cards */
+[data-theme='dark'] .summary-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+[data-theme='dark'] .summary-card h3 {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .summary-card .number {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .summary-card .number.positive {
+  color: var(--accent-success);
+}
+
+[data-theme='dark'] .summary-card .number.negative {
+  color: var(--accent-danger);
+}
+
+/* Dark mode trades section */
+[data-theme='dark'] .trades-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+[data-theme='dark'] .trades-section h2 {
+  color: var(--text-primary);
+}
+
+/* Dark mode table */
+[data-theme='dark'] .trades-table th {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+[data-theme='dark'] .trades-table td {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .trades-table tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
+[data-theme='dark'] .trades-table .symbol {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .trades-table .side.buy {
+  background: rgba(39, 174, 96, 0.2);
+  color: var(--accent-success);
+}
+
+[data-theme='dark'] .trades-table .side.sell {
+  background: rgba(231, 76, 60, 0.2);
+  color: var(--accent-danger);
+}
+
+[data-theme='dark'] .trades-table .pnl.positive {
+  color: var(--accent-success);
+}
+
+[data-theme='dark'] .trades-table .pnl.negative {
+  color: var(--accent-danger);
+}
+
+[data-theme='dark'] .trades-table .status.open {
+  background: rgba(243, 156, 18, 0.2);
+  color: var(--accent-warning);
+}
+
+[data-theme='dark'] .trades-table .status.closed {
+  background: rgba(23, 162, 184, 0.2);
+  color: var(--accent-info);
+}
+
+/* Dark mode exit reasons */
+[data-theme='dark'] .exit-reason.take_profit {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: var(--accent-success);
+}
+
+[data-theme='dark'] .exit-reason.stop_loss {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--accent-danger);
+}
+
+[data-theme='dark'] .exit-reason.manual {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+/* Dark mode checklist grades */
+[data-theme='dark'] .checklist-grade.A +,
+[data-theme='dark'] .checklist-grade.A,
+[data-theme='dark'] .checklist-grade.A- {
+  background: rgba(39, 174, 96, 0.2);
+  color: var(--accent-success);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+[data-theme='dark'] .checklist-grade.B +,
+[data-theme='dark'] .checklist-grade.B,
+[data-theme='dark'] .checklist-grade.B- {
+  background: rgba(23, 162, 184, 0.2);
+  color: var(--accent-info);
+  border: 1px solid rgba(23, 162, 184, 0.3);
+}
+
+[data-theme='dark'] .checklist-grade.C +,
+[data-theme='dark'] .checklist-grade.C,
+[data-theme='dark'] .checklist-grade.C- {
+  background: rgba(243, 156, 18, 0.2);
+  color: var(--accent-warning);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+[data-theme='dark'] .checklist-grade.D +,
+[data-theme='dark'] .checklist-grade.D,
+[data-theme='dark'] .checklist-grade.D- {
+  background: rgba(231, 76, 60, 0.2);
+  color: var(--accent-danger);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+[data-theme='dark'] .checklist-grade.F {
+  background: rgba(231, 76, 60, 0.3);
+  color: var(--accent-danger);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+[data-theme='dark'] .checklist-grade.no-grade {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+/* Dark mode analytics */
+[data-theme='dark'] .analytics-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+[data-theme='dark'] .analytics-section h2 {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .analytics-card {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .analytics-card h3 {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .metric {
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .metric .label {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .metric .value {
+  color: var(--text-primary);
+}
+
+/* Dark mode modals */
+[data-theme='dark'] .modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='dark'] .modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 60px var(--shadow);
+}
+
+[data-theme='dark'] .modal h2 {
+  color: var(--text-primary);
+}
+
+/* Dark mode forms */
+[data-theme='dark'] .form-group label {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .form-group input,
+[data-theme='dark'] .form-group select,
+[data-theme='dark'] .form-group textarea {
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .form-group input::placeholder,
+[data-theme='dark'] .form-group textarea::placeholder {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .form-group input:focus,
+[data-theme='dark'] .form-group select:focus,
+[data-theme='dark'] .form-group textarea:focus {
+  background: var(--bg-primary);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+[data-theme='dark'] .form-help {
+  color: var(--text-muted);
+}
+
+/* Dark mode buttons */
+[data-theme='dark'] .add-trade-btn {
+  background: var(--accent-primary);
+  color: white;
+}
+
+[data-theme='dark'] .add-trade-btn:hover {
+  background: #2980b9;
+}
+
+[data-theme='dark'] .action-btn {
+  background: var(--accent-primary);
+  color: white;
+}
+
+[data-theme='dark'] .action-btn.close-btn {
+  background: var(--accent-success);
+}
+
+[data-theme='dark'] .action-btn.delete-btn {
+  background: var(--accent-danger);
+}
+
+/* Dark mode pagination */
+[data-theme='dark'] .pagination {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .pagination-info {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .items-per-page label {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .items-per-page select {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .pagination-btn {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .pagination-btn:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--bg-tertiary);
+}
+
+[data-theme='dark'] .pagination-btn.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+/* Dark mode error states */
+[data-theme='dark'] .error {
+  color: var(--accent-danger);
+}
+
+[data-theme='dark'] .error-message {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--accent-danger);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Dark mode loading states */
+[data-theme='dark'] .loading {
+  color: var(--text-muted);
+}
+
+/* Dark mode trade info */
+[data-theme='dark'] .trade-info {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-primary);
+}
+
+[data-theme='dark'] .trade-info p {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .trade-info strong {
+  color: var(--text-secondary);
+}
+
+/* Dark mode warning messages */
+[data-theme='dark'] .warning-message {
+  background: rgba(243, 156, 18, 0.1);
+  color: var(--accent-warning);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+[data-theme='dark'] .warning-message strong {
+  color: var(--accent-warning);
+}
+
+/* Dark mode notes */
+[data-theme='dark'] .notes-text {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .notes-content h4 {
+  color: var(--text-primary);
+}
+
+/* Dark mode no data message */
+[data-theme='dark'] .no-data-message {
+  background: var(--bg-tertiary);
+  border: 1px dashed var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Dark mode risk/reward display */
+[data-theme='dark'] .risk-reward-display {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .risk-reward-display h4 {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .risk-reward-item .label {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .risk-reward-item .value {
+  color: var(--text-primary);
+}
+
+/* Dark mode trading checklist */
+[data-theme='dark'] .trading-checklist {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+[data-theme='dark'] .trading-checklist h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+[data-theme='dark'] .checklist-score {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
+}
+
+/* More specific dark mode checklist score selector */
+[data-theme='dark'] .trading-checklist .checklist-score {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme='dark'] .score-label {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .score-message {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .score-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Dark mode score-display */
+[data-theme='dark'] .score-display {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme='dark'] .score-display .score-label {
+  color: var(--text-primary) !important;
+}
+
+[data-theme='dark'] .score-display .score-message {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+}
+
+/* Keep score value (grade) white in both themes */
+[data-theme='dark'] .score-display .score-value,
+[data-theme='light'] .score-display .score-value {
+  color: white !important;
+}
+
+[data-theme='dark'] .checklist-section {
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+[data-theme='dark'] .checklist-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+[data-theme='dark'] .checklist-section h3 {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+[data-theme='dark'] .checklist-item {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-light);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme='dark'] .checklist-item:hover {
+  border-color: var(--accent-primary);
+  background-color: var(--bg-tertiary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+[data-theme='dark'] .checklist-item:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+[data-theme='dark'] .checklist-item:active {
+  outline: none;
+  transform: translateY(0);
+}
+
+[data-theme='dark'] .checklist-label {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .checklist-description {
+  color: var(--text-muted);
+}
+
+[data-theme='dark']
+  .checklist-item
+  input[type='checkbox']:checked
+  ~ .checklist-content
+  .checklist-label {
+  color: var(--accent-primary);
+}
+
+/* Dark mode checkbox styling */
+[data-theme='dark'] .checkbox-label input[type='checkbox'] {
+  accent-color: var(--accent-primary);
+  background-color: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+}
+
+[data-theme='dark'] .checklist-item input[type='checkbox']:checked {
+  border-color: var(--accent-primary);
+  background-color: var(--accent-primary);
+}
+
+[data-theme='dark'] .checklist-item .checklist-content {
+  padding: 0;
+  background-color: transparent;
+}
+
+[data-theme='dark'] .checklist-item input[type='checkbox']:checked {
+  border-color: var(--accent-primary);
+  background-color: var(--accent-primary);
+}
+
+[data-theme='dark'] .checklist-item.checked {
+  background-color: rgba(52, 152, 219, 0.15);
+  border-color: var(--accent-primary);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(52, 152, 219, 0.3);
+}
+
+/* Dark mode grade distribution */
+[data-theme='dark'] .grade-metric {
+  background: var(--bg-tertiary);
+  border-left: 4px solid var(--border-color);
+}
+
+[data-theme='dark'] .grade-label {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .grade-percentage {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .grade-summary {
+  border-top: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .summary-label {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .summary-value {
+  color: var(--text-secondary);
+}
+
+/* Dark mode legend */
+[data-theme='dark'] .legend-item {
+  color: var(--text-primary);
+}
+
+/* Dark mode info tooltip */
+[data-theme='dark'] .info-tooltip {
+  color: var(--text-muted);
+}
+
+/* Dark mode error boundary */
+[data-theme='dark'] .error-boundary h2 {
+  color: var(--accent-danger);
+}
+
+[data-theme='dark'] .error-boundary p {
+  color: var(--text-muted);
+}
+
+[data-theme='dark'] .error-boundary details {
+  background: var(--bg-tertiary);
+}
+
+[data-theme='dark'] .error-boundary summary {
+  color: var(--text-secondary);
+}
+
+/* ===== CHART ANIMATIONS ===== */
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enhanced chart styles */
+.line-chart {
+  transition: all 0.3s ease;
+}
+
+.line-path {
+  transition: all 0.8s ease-in-out;
+}
+
+.area-path {
+  transition: all 0.8s ease-in-out;
+}
+
+/* Chart hover effects */
+.line-chart:hover .line-path {
+  stroke-width: 5;
+  filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.3));
+}
+
+/* Data point animations */
+.analytics-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.analytics-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.analytics-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.analytics-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.analytics-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Summary cards animation */
+.summary-card {
+  animation: slideInFromLeft 0.6s ease-out;
+}
+
+.summary-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.summary-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.summary-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.summary-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.summary-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* Table row animations */
+.trades-table tbody tr {
+  animation: slideInFromLeft 0.4s ease-out;
+}
+
+.trades-table tbody tr:nth-child(odd) {
+  animation-delay: 0.1s;
+}
+
+.trades-table tbody tr:nth-child(even) {
+  animation-delay: 0.2s;
+}
+
+/* Loading animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border-color, #e9ecef);
+  border-radius: 50%;
+  border-top-color: var(--accent-primary, #3498db);
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10px;
+}
+
+/* Pulse animation for important elements */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+.action-btn,
+.pagination-btn,
+.form-group input,
+.form-group select,
+.form-group textarea {
+  transition: all 0.3s ease;
+}
+
+/* Hover effects for cards */
+.analytics-card:hover,
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--shadow, rgba(0, 0, 0, 0.15));
+}
+
+/* Chart tooltip styles */
+.chart-tooltip {
+  position: absolute;
+  background: var(--bg-secondary, #f8f9fa);
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-primary, #2c3e50);
+  box-shadow: 0 4px 12px var(--shadow, rgba(0, 0, 0, 0.15));
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.chart-tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive chart animations */
+@media (max-width: 768px) {
+  .analytics-card,
+  .summary-card {
+    animation-duration: 0.4s;
+  }
+
+  .trades-table tbody tr {
+    animation-duration: 0.3s;
+  }
+}
+
+/* ===== ADVANCED METRICS STYLES ===== */
+.metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.toggle-advanced-btn {
+  background: var(--accent-primary, #3498db);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-advanced-btn:hover {
+  background: var(--accent-primary, #2980b9);
+  transform: scale(1.1);
+}
+
+.advanced-metrics {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border-color, #dee2e6);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.advanced-metrics h4 {
+  color: var(--text-primary, #2c3e50);
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light, #e9ecef);
+  position: relative;
+}
+
+.metric:last-child {
+  border-bottom: none;
+}
+
+.metric .label {
+  color: var(--text-secondary, #495057);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.metric .value {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metric-grade {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Metric value colors */
+.value.excellent {
+  color: var(--accent-success, #27ae60);
+}
+
+.value.good {
+  color: var(--accent-primary, #3498db);
+}
+
+.value.fair {
+  color: var(--accent-warning, #f39c12);
+}
+
+.value.poor {
+  color: var(--accent-danger, #e74c3c);
+}
+
+.value.positive {
+  color: var(--accent-success, #27ae60);
+}
+
+.value.negative {
+  color: var(--accent-danger, #e74c3c);
+}
+
+/* Metric grade colors */
+.metric-grade.excellent {
+  background: var(--accent-success, #27ae60);
+  color: white;
+}
+
+.metric-grade.good {
+  background: var(--accent-primary, #3498db);
+  color: white;
+}
+
+.metric-grade.fair {
+  background: var(--accent-warning, #f39c12);
+  color: white;
+}
+
+.metric-grade.poor {
+  background: var(--accent-danger, #e74c3c);
+  color: white;
+}
+
+.metric-grade.positive {
+  background: var(--accent-success, #27ae60);
+  color: white;
+}
+
+.metric-grade.negative {
+  background: var(--accent-danger, #e74c3c);
+  color: white;
+}
+
+/* Performance Summary */
+.performance-summary {
+  background: var(--bg-tertiary, #f8f9fa);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  border: 1px solid var(--border-color, #dee2e6);
+}
+
+.performance-summary h5 {
+  color: var(--text-primary, #2c3e50);
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  background: var(--bg-primary, white);
+  border-radius: 6px;
+  border: 1px solid var(--border-light, #e9ecef);
+}
+
+.summary-label {
+  font-size: 12px;
+  color: var(--text-muted, #6c757d);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  min-width: 40px;
+}
+
+.summary-value.excellent {
+  background: var(--accent-success, #27ae60);
+  color: white;
+}
+
+.summary-value.good {
+  background: var(--accent-primary, #3498db);
+  color: white;
+}
+
+.summary-value.fair {
+  background: var(--accent-warning, #f39c12);
+  color: white;
+}
+
+.summary-value.poor {
+  background: var(--accent-danger, #e74c3c);
+  color: white;
+}
+
+/* Dark mode for advanced metrics */
+[data-theme='dark'] .advanced-metrics {
+  border-top-color: var(--border-color);
+}
+
+[data-theme='dark'] .advanced-metrics h4 {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .metric {
+  border-bottom-color: var(--border-light);
+}
+
+[data-theme='dark'] .metric .label {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .performance-summary {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+[data-theme='dark'] .performance-summary h5 {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .summary-item {
+  background: var(--bg-primary);
+  border-color: var(--border-light);
+}
+
+[data-theme='dark'] .summary-label {
+  color: var(--text-muted);
+}
+
+/* Responsive design for advanced metrics */
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .metric {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .metric .value {
+    align-self: flex-end;
+  }
+}
