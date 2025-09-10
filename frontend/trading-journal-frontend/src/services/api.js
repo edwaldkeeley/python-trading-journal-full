@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'
 
 // Generic API request function
 const apiRequest = async (endpoint, options = {}) => {
@@ -8,14 +9,14 @@ const apiRequest = async (endpoint, options = {}) => {
       ...options.headers,
     },
     ...options,
-  });
+  })
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    throw new Error(`API Error: ${response.status} ${response.statusText}`)
   }
 
-  return response.json();
-};
+  return response.json()
+}
 
 // Trade API functions
 export const tradeAPI = {
@@ -24,8 +25,7 @@ export const tradeAPI = {
     apiRequest(`/trades?limit=${limit}&offset=${offset}`),
 
   // Get single trade
-  getTrade: (tradeId) =>
-    apiRequest(`/trades/${tradeId}`),
+  getTrade: (tradeId) => apiRequest(`/trades/${tradeId}`),
 
   // Create new trade
   createTrade: (tradeData) =>
@@ -33,11 +33,8 @@ export const tradeAPI = {
       method: 'POST',
       body: JSON.stringify({
         ...tradeData,
-        entry_time: new Date().toISOString(),
-        exit_time: null,
-        exit_price: null,
-        pnl: null,
-        is_closed: false
+        // Only set entry_time if not provided (for manual trade creation)
+        entry_time: tradeData.entry_time || new Date().toISOString(),
       }),
     }),
 
@@ -53,4 +50,4 @@ export const tradeAPI = {
     apiRequest(`/trades/${tradeId}`, {
       method: 'DELETE',
     }),
-};
+}
