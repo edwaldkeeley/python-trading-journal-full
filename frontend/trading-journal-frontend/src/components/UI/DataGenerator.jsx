@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import useModalAnimation from '../../hooks/useModalAnimation'
 import {
   generateTradeData,
   generateScenarios,
 } from '../../utils/tradeDataGenerator'
 
 const DataGenerator = ({ onGenerateTrades, isOpen, onClose }) => {
+  const { isClosing, handleClose } = useModalAnimation(onClose)
+
   const [scenario, setScenario] = useState('profitable')
   const [customOptions, setCustomOptions] = useState({
     totalTrades: 50,
@@ -87,13 +90,19 @@ const DataGenerator = ({ onGenerateTrades, isOpen, onClose }) => {
   if (!isOpen) return null
 
   return (
-    <div className="modal-overlay">
-      <div className="modal data-generator-modal">
+    <div
+      className={`modal-overlay ${isClosing ? 'closing' : ''}`}
+      onClick={handleClose}
+    >
+      <div
+        className={`modal data-generator-modal ${isClosing ? 'closing' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
           <h2>Generate Sample Trade Data</h2>
           <button
             className="btn btn-icon btn-sm"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close"
           >
             ×
@@ -228,7 +237,7 @@ const DataGenerator = ({ onGenerateTrades, isOpen, onClose }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={onClose}>
+          <button className="btn btn-secondary" onClick={handleClose}>
             Cancel
           </button>
           <button

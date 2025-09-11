@@ -1,14 +1,27 @@
 import React from 'react'
+import useModalAnimation from '../../hooks/useModalAnimation'
 
 const NotesModal = ({ isOpen, onClose, notes, tradeInfo }) => {
+  const { isClosing, handleClose } = useModalAnimation(onClose)
+
   if (!isOpen) return null
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal notes-modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`modal-overlay ${isClosing ? 'closing' : ''}`}
+      onClick={handleClose}
+    >
+      <div
+        className={`modal notes-modal ${isClosing ? 'closing' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
-          <h3>Trade Notes</h3>
-          <button className="modal-close" onClick={onClose}>
+          <h2>Trade Notes</h2>
+          <button
+            className="btn btn-icon btn-sm"
+            onClick={handleClose}
+            aria-label="Close"
+          >
             ×
           </button>
         </div>
@@ -39,7 +52,7 @@ const NotesModal = ({ isOpen, onClose, notes, tradeInfo }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={onClose}>
+          <button className="btn btn-secondary" onClick={handleClose}>
             Close
           </button>
         </div>

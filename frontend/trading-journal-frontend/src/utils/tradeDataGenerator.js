@@ -109,13 +109,16 @@ const generatePnL = (side, entryPrice, exitPrice, quantity, lotSize = 1) => {
   const priceDifference =
     side === 'buy' ? exitPrice - entryPrice : entryPrice - exitPrice
 
-  const grossPnL = priceDifference * quantity * lotSize
-  const fees = Math.round(randomBetween(5, 25) * 100) / 100 // Random fees between $5-$25, rounded to 2 decimals
+  // Calculate gross PnL based on price movement (simplified calculation)
+  const grossPnL = priceDifference * quantity * lotSize * 1000 // Scale for realistic forex values
+
+  // Add realistic fees (spread + commission)
+  const fees = Math.round(randomBetween(2, 8) * 100) / 100 // $2-$8 fees
   let pnl = grossPnL - fees
 
-  // Ensure minimum PnL magnitude to avoid getting stuck at 0
-  const minPnL = 10 // Minimum $10 PnL magnitude
-  if (Math.abs(pnl) < minPnL) {
+  // Only apply minimum PnL if the calculated PnL is very close to zero
+  const minPnL = 2 // Minimum $2 PnL magnitude
+  if (Math.abs(pnl) < minPnL && Math.abs(pnl) > 0.1) {
     const sign = pnl >= 0 ? 1 : -1
     pnl = sign * randomBetween(minPnL, minPnL * 2)
   }
@@ -127,7 +130,7 @@ const generatePnL = (side, entryPrice, exitPrice, quantity, lotSize = 1) => {
  * Generate a winning trade by setting appropriate exit price
  */
 const generateWinningTrade = (baseTrade) => {
-  const profitPercent = randomBetween(0.02, 0.08) // 2% to 8% profit (increased for better PnL)
+  const profitPercent = randomBetween(0.01, 0.05) // 1% to 5% profit
 
   if (baseTrade.side === 'buy') {
     baseTrade.exit_price = baseTrade.entry_price * (1 + profitPercent)
@@ -145,7 +148,19 @@ const generateWinningTrade = (baseTrade) => {
 
   // Ensure PnL is positive for winning trades
   if (baseTrade.pnl <= 0) {
-    baseTrade.pnl = randomBetween(50, 500) // Force positive PnL
+    baseTrade.pnl = randomBetween(10, 200) // Force positive PnL
+  }
+
+  // Set grade based on PnL and checklist score
+  const checklistScore = baseTrade.checklist_score || 0
+  if (baseTrade.pnl > 0 && checklistScore >= 80) {
+    baseTrade.checklist_grade = randomChoice(['A+', 'A', 'A-'])
+  } else if (baseTrade.pnl > 0 && checklistScore >= 60) {
+    baseTrade.checklist_grade = randomChoice(['B+', 'B', 'B-'])
+  } else if (baseTrade.pnl > 0 && checklistScore >= 40) {
+    baseTrade.checklist_grade = randomChoice(['C+', 'C', 'C-'])
+  } else {
+    baseTrade.checklist_grade = randomChoice(['D+', 'D', 'D-'])
   }
 
   return baseTrade
@@ -155,7 +170,7 @@ const generateWinningTrade = (baseTrade) => {
  * Generate a losing trade by setting appropriate exit price
  */
 const generateLosingTrade = (baseTrade) => {
-  const lossPercent = randomBetween(0.01, 0.05) // 1% to 5% loss (increased for better PnL)
+  const lossPercent = randomBetween(0.005, 0.03) // 0.5% to 3% loss
 
   if (baseTrade.side === 'buy') {
     baseTrade.exit_price = baseTrade.entry_price * (1 - lossPercent)
@@ -173,7 +188,17 @@ const generateLosingTrade = (baseTrade) => {
 
   // Ensure PnL is negative for losing trades
   if (baseTrade.pnl >= 0) {
-    baseTrade.pnl = randomBetween(-500, -50) // Force negative PnL
+    baseTrade.pnl = randomBetween(-200, -10) // Force negative PnL
+  }
+
+  // Set grade based on PnL and checklist score
+  const checklistScore = baseTrade.checklist_score || 0
+  if (baseTrade.pnl < 0 && checklistScore >= 60) {
+    baseTrade.checklist_grade = randomChoice(['B+', 'B', 'B-'])
+  } else if (baseTrade.pnl < 0 && checklistScore >= 40) {
+    baseTrade.checklist_grade = randomChoice(['C+', 'C', 'C-'])
+  } else {
+    baseTrade.checklist_grade = randomChoice(['D+', 'D', 'D-'])
   }
 
   return baseTrade
@@ -195,14 +220,13 @@ const generateTrade = (index, isClosed = true) => {
   let pnl = null
   let exitReason = null
 
+  // Don't generate exit data here - let generateWinningTrade/generateLosingTrade handle it
   if (isClosed) {
-    exitPrice = generatePrice(symbol)
     exitTime = new Date(entryTime)
     exitTime.setTime(exitTime.getTime() + randomInt(1, 7) * 24 * 60 * 60 * 1000) // 1-7 days later
     exitTime = exitTime.toISOString()
-
-    pnl = generatePnL(side, entryPrice, exitPrice, quantity, lotSize)
     exitReason = randomChoice(EXIT_REASONS)
+    // exitPrice and pnl will be set by generateWinningTrade/generateLosingTrade
   }
 
   // Generate checklist data with more realistic scores
@@ -225,19 +249,8 @@ const generateTrade = (index, isClosed = true) => {
   const percentage = Math.round((totalScore / maxScore) * 100)
 
   // Generate grade based on performance and checklist
+  // Note: Grade will be set by generateWinningTrade/generateLosingTrade after pnl is determined
   let grade = null
-  if (isClosed) {
-    if (pnl > 0 && percentage >= 80) grade = randomChoice(['A+', 'A', 'A-'])
-    else if (pnl > 0 && percentage >= 60)
-      grade = randomChoice(['B+', 'B', 'B-'])
-    else if (pnl > 0 && percentage >= 40)
-      grade = randomChoice(['C+', 'C', 'C-'])
-    else if (pnl <= 0 && percentage >= 60)
-      grade = randomChoice(['B+', 'B', 'B-'])
-    else if (pnl <= 0 && percentage >= 40)
-      grade = randomChoice(['C+', 'C', 'C-'])
-    else grade = randomChoice(['D+', 'D', 'D-'])
-  }
 
   return {
     id: `generated_${index}`,
@@ -258,6 +271,7 @@ const generateTrade = (index, isClosed = true) => {
       Math.round(entryPrice * (side === 'buy' ? 1.02 : 0.98) * 10000) / 10000,
     stop_loss:
       Math.round(entryPrice * (side === 'buy' ? 0.98 : 1.02) * 10000) / 10000,
+    is_closed: isClosed,
     checklist_grade: grade,
     checklist_score: totalScore,
     checklist_max_score: maxScore,
@@ -278,13 +292,34 @@ export const generateTradeData = (options = {}) => {
 
   const trades = []
   const closedTradesCount = Math.floor(totalTrades * closedTradesRatio)
+  const winningTradesCount = Math.floor(closedTradesCount * winRate)
+  const losingTradesCount = closedTradesCount - winningTradesCount
 
-  // Generate closed trades
+  // Create arrays to ensure exact win rate
+  const tradeTypes = []
+
+  // Add winning trades
+  for (let i = 0; i < winningTradesCount; i++) {
+    tradeTypes.push('win')
+  }
+
+  // Add losing trades
+  for (let i = 0; i < losingTradesCount; i++) {
+    tradeTypes.push('loss')
+  }
+
+  // Shuffle the array to randomize order
+  for (let i = tradeTypes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[tradeTypes[i], tradeTypes[j]] = [tradeTypes[j], tradeTypes[i]]
+  }
+
+  // Generate closed trades with exact win rate
   for (let i = 0; i < closedTradesCount; i++) {
-    const shouldWin = Math.random() < winRate
+    const tradeType = tradeTypes[i]
     let trade = generateTrade(i, true)
 
-    if (shouldWin) {
+    if (tradeType === 'win') {
       trade = generateWinningTrade(trade)
     } else {
       trade = generateLosingTrade(trade)
@@ -299,7 +334,50 @@ export const generateTradeData = (options = {}) => {
   }
 
   // Sort trades by entry time (newest first)
-  return trades.sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time))
+  const sortedTrades = trades.sort(
+    (a, b) => new Date(b.entry_time) - new Date(a.entry_time)
+  )
+
+  // Debug logging (remove in production)
+  const DEBUG = false // Set to true for debugging
+  if (DEBUG) {
+    const closedTrades = sortedTrades.filter(
+      (trade) => trade.is_closed && trade.exit_price && trade.exit_time
+    )
+    const winningTrades = closedTrades.filter((trade) => trade.pnl > 0)
+    const actualWinRate =
+      closedTrades.length > 0
+        ? (winningTrades.length / closedTrades.length) * 100
+        : 0
+
+    console.log('Data Generation Debug:', {
+      totalTrades: sortedTrades.length,
+      closedTrades: closedTrades.length,
+      winningTrades: winningTrades.length,
+      losingTrades: closedTrades.length - winningTrades.length,
+      expectedWinRate: (winRate * 100).toFixed(1) + '%',
+      actualWinRate: actualWinRate.toFixed(1) + '%',
+      closedTradesRatio:
+        ((closedTrades.length / sortedTrades.length) * 100).toFixed(1) + '%',
+      tradeTypes: tradeTypes.slice(0, 10), // Show first 10 trade types
+      closedTradesCount,
+      winningTradesCount,
+      losingTradesCount,
+    })
+
+    // Log some sample trades to see their PnL
+    console.log(
+      'Sample trades:',
+      closedTrades.slice(0, 5).map((trade) => ({
+        id: trade.id,
+        pnl: trade.pnl,
+        is_closed: trade.is_closed,
+        exit_price: trade.exit_price,
+      }))
+    )
+  }
+
+  return sortedTrades
 }
 
 /**

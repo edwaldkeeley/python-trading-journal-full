@@ -1,16 +1,25 @@
 import React from 'react'
+import useModalAnimation from '../../hooks/useModalAnimation'
 
 const DeleteTradeModal = ({ isOpen, onClose, onConfirm, trade, isLoading }) => {
+  const { isClosing, handleClose } = useModalAnimation(onClose)
+
   if (!isOpen || !trade) return null
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`modal-overlay ${isClosing ? 'closing' : ''}`}
+      onClick={handleClose}
+    >
+      <div
+        className={`modal ${isClosing ? 'closing' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
           <h2>Delete Trade</h2>
           <button
             className="btn btn-icon btn-sm"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close"
           >
             ×

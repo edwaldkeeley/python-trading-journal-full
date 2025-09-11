@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import useModalAnimation from '../../hooks/useModalAnimation'
 
 const TradeEraser = ({ isOpen, onClose, onConfirm, isLoading = false }) => {
+  const { isClosing, handleClose } = useModalAnimation(onClose)
+
   const [confirmText, setConfirmText] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
 
@@ -12,10 +15,10 @@ const TradeEraser = ({ isOpen, onClose, onConfirm, isLoading = false }) => {
     }
   }
 
-  const handleClose = () => {
+  const handleModalClose = () => {
     setConfirmText('')
     setIsConfirmed(false)
-    onClose()
+    handleClose()
   }
 
   const handleTextChange = (e) => {
@@ -27,13 +30,19 @@ const TradeEraser = ({ isOpen, onClose, onConfirm, isLoading = false }) => {
   if (!isOpen) return null
 
   return (
-    <div className="modal-overlay">
-      <div className="modal trade-eraser-modal">
+    <div
+      className={`modal-overlay ${isClosing ? 'closing' : ''}`}
+      onClick={handleModalClose}
+    >
+      <div
+        className={`modal trade-eraser-modal ${isClosing ? 'closing' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
           <h2>⚠️ Clear All Trade History</h2>
           <button
             className="btn btn-icon btn-sm"
-            onClick={handleClose}
+            onClick={handleModalClose}
             aria-label="Close"
           >
             ×
@@ -75,7 +84,7 @@ const TradeEraser = ({ isOpen, onClose, onConfirm, isLoading = false }) => {
         <div className="modal-footer">
           <button
             className="btn btn-secondary"
-            onClick={handleClose}
+            onClick={handleModalClose}
             disabled={isLoading}
           >
             Cancel

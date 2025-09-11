@@ -21,7 +21,7 @@ const Header = ({ onAddTrade, onGenerateData, onClearAll }) => {
         >
           🗑️ Clear All
         </button>
-        <button className="add-trade-btn" onClick={onAddTrade}>
+        <button className="btn btn-primary btn-sm" onClick={onAddTrade}>
           + Add Trade
         </button>
       </div>

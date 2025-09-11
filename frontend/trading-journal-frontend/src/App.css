@@ -83,20 +83,14 @@ body {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .header h1 {
   color: #2c3e50;
   font-size: 28px;
   font-weight: 600;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 .add-trade-btn {
@@ -902,18 +896,101 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  opacity: 0;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.modal-overlay.closing {
+  animation: fadeOut 0.15s cubic-bezier(0.4, 0, 0.6, 1) forwards;
 }
 
 .modal {
   background: white;
   border-radius: 16px;
+  transform: translateY(-30px) rotateX(10deg) scale(0.95);
+  animation: slideInRotate 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  overflow: hidden; /* Fix scrollbar border radius issue */
   padding: 32px;
   max-width: 600px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  border: 1px solid #e9ecef;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal.closing {
+  animation: slideOutRotate 0.15s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+/* Modal Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInRotate {
+  from {
+    transform: translateY(-30px) rotateX(10deg) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRotate {
+  from {
+    transform: translateY(0) rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-30px) rotateX(10deg) scale(0.95);
+    opacity: 0;
+  }
+}
+
+/* Fix scrollbar styling to respect border radius */
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 0 16px 16px 0;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode scrollbar */
+[data-theme='dark'] .modal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .modal h2 {
@@ -2222,7 +2299,7 @@ body {
 
 /* Additional Dark Mode Styles */
 [data-theme='dark'] .header-actions {
-  gap: 16px;
+  gap: 12px;
 }
 
 [data-theme='dark'] .add-trade-btn {
@@ -2898,6 +2975,12 @@ body {
   margin-top: 20px;
 }
 
+.data-generator-modal .modal-footer .btn {
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+  min-width: auto; /* Allow natural width */
+  height: 36px; /* Ensure consistent height */
+}
+
 .generator-section {
   margin-bottom: 24px;
 }
@@ -3249,6 +3332,22 @@ body {
   box-shadow: 0 6px 20px rgba(108, 123, 125, 0.5);
 }
 
+[data-theme='dark'] .btn-danger {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+[data-theme='dark'] .btn-danger:hover {
+  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+}
+
+[data-theme='dark'] .btn-sm {
+  padding: 8px 16px;
+  font-size: 12px;
+  height: 36px;
+}
+
 [data-theme='dark'] .btn-outline {
   color: var(--accent-primary);
   border-color: var(--accent-primary);
@@ -3368,6 +3467,16 @@ body {
   font-size: 18px;
   font-weight: bold;
   transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .data-generator-modal .modal-header .btn-icon:hover {
@@ -3381,6 +3490,16 @@ body {
 [data-theme='dark'] .data-generator-modal .modal-header .btn-icon {
   border-color: var(--border-color);
   color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 [data-theme='dark'] .data-generator-modal .modal-header .btn-icon:hover {
@@ -3545,8 +3664,63 @@ body {
   margin-top: 20px;
 }
 
+.modal-footer .btn {
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+  min-width: auto; /* Allow natural width */
+  height: 36px; /* Ensure consistent height */
+}
+
+/* General modal close button styling */
+.modal-header .btn-icon {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: #6c757d;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-header .btn-icon:hover {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  color: #495057;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Dark mode for general modal */
 [data-theme='dark'] .modal-header h2 {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .modal-header .btn-icon {
+  border-color: var(--border-color);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme='dark'] .modal-header .btn-icon:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
   color: var(--text-primary);
 }
 
