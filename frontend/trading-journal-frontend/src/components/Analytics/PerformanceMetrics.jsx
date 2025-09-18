@@ -1,6 +1,12 @@
 import React from 'react'
 
 const PerformanceMetrics = ({ analytics }) => {
+  // Convert win rate to decimal if it's a string percentage
+  const winRate =
+    typeof analytics.winRate === 'string'
+      ? parseFloat(analytics.winRate) / 100
+      : analytics.winRate
+
   return (
     <div className="analytics-card">
       <h3>Performance Metrics</h3>
@@ -8,12 +14,8 @@ const PerformanceMetrics = ({ analytics }) => {
       <div className="metrics-section">
         <div className="metric">
           <span className="label">Win Rate:</span>
-          <span
-            className={`value ${
-              analytics.winRate >= 50 ? 'positive' : 'negative'
-            }`}
-          >
-            {analytics.winRate}%
+          <span className={`value ${winRate >= 0.5 ? 'positive' : 'negative'}`}>
+            {(winRate * 100).toFixed(1)}%
           </span>
         </div>
         <div className="metric">

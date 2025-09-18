@@ -58,16 +58,16 @@ const AdvancedMetrics = ({ trades = [] }) => {
     const winningTrades = pnls.filter((pnl) => pnl > 0)
     const losingTrades = pnls.filter((pnl) => pnl < 0)
 
-    // Debug PnL data (remove in production)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('PnL Debug:', {
-        closedTrades: closedTrades.length,
-        pnls: pnls,
-        winningTrades: winningTrades.length,
-        losingTrades: losingTrades.length,
-        sampleTrade: closedTrades[0],
-      })
-    }
+    // Debug PnL data (commented out for production)
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('PnL Debug:', {
+    //     closedTrades: closedTrades.length,
+    //     pnls: pnls,
+    //     winningTrades: winningTrades.length,
+    //     losingTrades: losingTrades.length,
+    //     sampleTrade: closedTrades[0],
+    //   })
+    // }
 
     const totalPnL = pnls.reduce((sum, pnl) => sum + pnl, 0)
     const totalWins = winningTrades.reduce((sum, pnl) => sum + pnl, 0)
@@ -75,9 +75,8 @@ const AdvancedMetrics = ({ trades = [] }) => {
       losingTrades.reduce((sum, pnl) => sum + pnl, 0)
     )
 
-    // Win Rate
-    const winRate =
-      totalTrades > 0 ? (winningTrades.length / totalTrades) * 100 : 0
+    // Win Rate (as decimal for consistency)
+    const winRate = totalTrades > 0 ? winningTrades.length / totalTrades : 0
 
     // Profit Factor
     const profitFactor = totalLosses > 0 ? totalWins / totalLosses : 0
@@ -165,7 +164,7 @@ const AdvancedMetrics = ({ trades = [] }) => {
     const calmarRatio = maxDrawdown > 0 ? totalPnL / maxDrawdown : 0
 
     return {
-      winRate: Math.round(winRate * 100) / 100,
+      winRate: winRate, // Keep as decimal for consistency
       profitFactor: Math.round(profitFactor * 100) / 100,
       sharpeRatio: Math.round(sharpeRatio * 100) / 100,
       maxDrawdown: Math.round(maxDrawdown * 100) / 100,
@@ -188,26 +187,27 @@ const AdvancedMetrics = ({ trades = [] }) => {
 
   const metrics = calculateAdvancedMetrics(trades)
 
-  // Debug logging (remove in production)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Advanced Metrics Debug:', {
-      totalTrades: trades.length,
-      closedTrades: getClosedTrades(trades).length,
-      metrics,
-    })
-  }
+  // Debug logging (commented out for production)
+  // if (process.env.NODE_ENV === 'development') {
+  //   console.log('Advanced Metrics Debug:', {
+  //     totalTrades: trades.length,
+  //     closedTrades: getClosedTrades(trades).length,
+  //     metrics,
+  //   })
+  // }
+
+  // Convert win rate to decimal if it's a string percentage
+  const winRate =
+    typeof metrics.winRate === 'string'
+      ? parseFloat(metrics.winRate) / 100
+      : metrics.winRate
 
   const metricCards = [
     {
       title: 'Win Rate',
-      value: `${metrics.winRate}%`,
+      value: `${(winRate * 100).toFixed(1)}%`,
       description: 'Percentage of profitable trades',
-      color:
-        metrics.winRate >= 50
-          ? 'success'
-          : metrics.winRate >= 40
-          ? 'warning'
-          : 'danger',
+      color: winRate >= 0.5 ? 'success' : winRate >= 0.4 ? 'warning' : 'danger',
     },
     {
       title: 'Profit Factor',

@@ -129,8 +129,7 @@ const Dashboard = () => {
     const winningTrades = closedTradesArray.filter(
       (trade) => trade.pnl && trade.pnl > 0
     ).length
-    const winRate =
-      closedTrades > 0 ? ((winningTrades / closedTrades) * 100).toFixed(1) : 0
+    const winRate = closedTrades > 0 ? winningTrades / closedTrades : 0
 
     return { totalTrades, closedTrades, openTrades, totalPnL, winRate }
   }

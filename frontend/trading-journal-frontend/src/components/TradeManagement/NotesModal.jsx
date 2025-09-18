@@ -28,25 +28,67 @@ const NotesModal = ({ isOpen, onClose, notes, tradeInfo }) => {
 
         <div className="modal-body">
           <div className="trade-info">
-            <p>
-              <strong>Symbol:</strong> {tradeInfo.symbol}
-            </p>
-            <p>
-              <strong>Side:</strong> {tradeInfo.side.toUpperCase()}
-            </p>
-            <p>
-              <strong>Entry Price:</strong> ${Math.round(tradeInfo.entry_price)}
-            </p>
-            <p>
-              <strong>Entry Time:</strong>{' '}
-              {new Date(tradeInfo.entry_time).toLocaleString()}
-            </p>
+            <div className="trade-info-header">
+              <h3>{tradeInfo.symbol}</h3>
+              <span className={`trade-side ${tradeInfo.side}`}>
+                {tradeInfo.side.toUpperCase()}
+              </span>
+            </div>
+            <div className="trade-details">
+              <div className="detail-item">
+                <span className="label">Entry Price:</span>
+                <span className="value">
+                  ${parseFloat(tradeInfo.entry_price).toFixed(4)}
+                </span>
+              </div>
+              <div className="detail-item">
+                <span className="label">Entry Time:</span>
+                <span className="value">
+                  {new Date(tradeInfo.entry_time).toLocaleString()}
+                </span>
+              </div>
+              {tradeInfo.exit_price && (
+                <div className="detail-item">
+                  <span className="label">Exit Price:</span>
+                  <span className="value">
+                    ${parseFloat(tradeInfo.exit_price).toFixed(4)}
+                  </span>
+                </div>
+              )}
+              {tradeInfo.pnl && (
+                <div className="detail-item">
+                  <span className="label">P&L:</span>
+                  <span
+                    className={`value ${
+                      tradeInfo.pnl >= 0 ? 'positive' : 'negative'
+                    }`}
+                  >
+                    ${parseFloat(tradeInfo.pnl).toFixed(2)}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="notes-content">
-            <h4>Notes:</h4>
+            <h4>Trade Notes</h4>
             <div className="notes-text">
-              {notes || 'No notes available for this trade.'}
+              {notes ? (
+                <div className="notes-formatted">
+                  {notes.split('\n').map((line, index) => (
+                    <p key={index}>{line || '\u00A0'}</p>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-notes">
+                  <div className="no-notes-icon">📝</div>
+                  <p>No notes available for this trade.</p>
+                  <small>
+                    Add notes when creating or editing trades to track your
+                    strategy and market conditions.
+                  </small>
+                </div>
+              )}
             </div>
           </div>
         </div>

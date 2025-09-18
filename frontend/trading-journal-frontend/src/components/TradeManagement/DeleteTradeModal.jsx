@@ -1,7 +1,14 @@
 import React from 'react'
 import useModalAnimation from '../../hooks/useModalAnimation'
 
-const DeleteTradeModal = ({ isOpen, onClose, onConfirm, trade, isLoading }) => {
+const DeleteTradeModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  trade,
+  isLoading,
+  error,
+}) => {
   const { isClosing, handleClose } = useModalAnimation(onClose)
 
   if (!isOpen || !trade) return null
@@ -27,6 +34,8 @@ const DeleteTradeModal = ({ isOpen, onClose, onConfirm, trade, isLoading }) => {
         </div>
 
         <div className="modal-body">
+          {error && <div className="error-message">{error}</div>}
+
           <div className="trade-info">
             <p>
               <strong>Symbol:</strong> {trade.symbol}
@@ -38,24 +47,28 @@ const DeleteTradeModal = ({ isOpen, onClose, onConfirm, trade, isLoading }) => {
               <strong>Quantity:</strong> {trade.quantity}
             </p>
             <p>
-              <strong>Entry Price:</strong> ${Math.round(trade.entry_price)}
+              <strong>Entry Price:</strong> $
+              {parseFloat(trade.entry_price).toFixed(4)}
             </p>
             <p>
-              <strong>Stop Loss:</strong> ${Math.round(trade.stop_loss)}
+              <strong>Stop Loss:</strong> $
+              {parseFloat(trade.stop_loss).toFixed(4)}
             </p>
             <p>
-              <strong>Take Profit:</strong> ${Math.round(trade.take_profit)}
+              <strong>Take Profit:</strong> $
+              {parseFloat(trade.take_profit).toFixed(4)}
             </p>
             {trade.exit_price && (
               <p>
-                <strong>Exit Price:</strong> ${Math.round(trade.exit_price)}
+                <strong>Exit Price:</strong> $
+                {parseFloat(trade.exit_price).toFixed(4)}
               </p>
             )}
             {trade.pnl !== null && (
               <p>
                 <strong>P&L:</strong>{' '}
                 <span className={trade.pnl >= 0 ? 'positive' : 'negative'}>
-                  ${Math.round(trade.pnl)}
+                  ${parseFloat(trade.pnl).toFixed(2)}
                 </span>
               </p>
             )}
@@ -65,7 +78,14 @@ const DeleteTradeModal = ({ isOpen, onClose, onConfirm, trade, isLoading }) => {
             <p>
               ⚠️ <strong>Warning:</strong> This action cannot be undone.
             </p>
-            <p>Are you sure you want to delete this trade?</p>
+            <p>
+              You are about to permanently delete this trade from your journal.
+              All associated data including P&L, checklist scores, and notes
+              will be lost.
+            </p>
+            <p>
+              <strong>Are you sure you want to proceed?</strong>
+            </p>
           </div>
         </div>
 

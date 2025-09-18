@@ -4,22 +4,37 @@ import useModalAnimation from '../../hooks/useModalAnimation'
 const CloseTradeModal = ({ isOpen, onClose, onSubmit, trade }) => {
   const { isClosing, handleClose } = useModalAnimation(onClose)
   const [exitPrice, setExitPrice] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    // Clear previous errors
+    setError('')
+
     if (!exitPrice || exitPrice <= 0) {
-      alert('Please enter a valid exit price')
+      setError('Please enter a valid exit price')
       return
     }
 
+    const price = parseFloat(exitPrice)
+    if (isNaN(price)) {
+      setError('Please enter a valid number for exit price')
+      return
+    }
+
+    setIsLoading(true)
     try {
-      await onSubmit({ tradeId: trade.id, exitPrice: parseFloat(exitPrice) })
+      await onSubmit({ tradeId: trade.id, exitPrice: price })
       setExitPrice('')
+      setError('')
       onClose()
     } catch (error) {
       console.error('Error closing trade:', error)
-      alert('Failed to close trade. Please try again.')
+      setError(error.message || 'Failed to close trade. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -46,6 +61,8 @@ const CloseTradeModal = ({ isOpen, onClose, onSubmit, trade }) => {
         </div>
 
         <div className="modal-body">
+          {error && <div className="error-message">{error}</div>}
+
           <div className="trade-info">
             <p>
               <strong>Symbol:</strong> {trade.symbol}
@@ -57,13 +74,16 @@ const CloseTradeModal = ({ isOpen, onClose, onSubmit, trade }) => {
               <strong>Quantity:</strong> {trade.quantity}
             </p>
             <p>
-              <strong>Entry Price:</strong> ${Math.round(trade.entry_price)}
+              <strong>Entry Price:</strong> $
+              {parseFloat(trade.entry_price).toFixed(4)}
             </p>
             <p>
-              <strong>Stop Loss:</strong> ${Math.round(trade.stop_loss)}
+              <strong>Stop Loss:</strong> $
+              {parseFloat(trade.stop_loss).toFixed(4)}
             </p>
             <p>
-              <strong>Take Profit:</strong> ${Math.round(trade.take_profit)}
+              <strong>Take Profit:</strong> $
+              {parseFloat(trade.take_profit).toFixed(4)}
             </p>
           </div>
 
@@ -84,8 +104,8 @@ const CloseTradeModal = ({ isOpen, onClose, onSubmit, trade }) => {
                 name="exit_price"
                 value={exitPrice}
                 onChange={(e) => setExitPrice(e.target.value)}
-                step="0.01"
-                placeholder="0.00"
+                step="0.0001"
+                placeholder="1.0850"
                 min="0"
                 required
               />
@@ -98,15 +118,17 @@ const CloseTradeModal = ({ isOpen, onClose, onSubmit, trade }) => {
             type="button"
             className="btn btn-secondary"
             onClick={handleClose}
+            disabled={isLoading}
           >
             Cancel
           </button>
           <button
-            type="submit"
+            type="button"
             className="btn btn-primary"
             onClick={handleSubmit}
+            disabled={isLoading}
           >
-            Close Trade
+            {isLoading ? 'Closing...' : 'Close Trade'}
           </button>
         </div>
       </div>

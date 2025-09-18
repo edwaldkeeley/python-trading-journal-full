@@ -1,6 +1,12 @@
-import React from 'react';
+import React from 'react'
 
 const SummaryCards = ({ stats }) => {
+  // Convert win rate to decimal if it's a string percentage
+  const winRate =
+    typeof stats.winRate === 'string'
+      ? parseFloat(stats.winRate) / 100
+      : stats.winRate
+
   return (
     <div className="summary-cards">
       <div className="summary-card">
@@ -17,16 +23,18 @@ const SummaryCards = ({ stats }) => {
       </div>
       <div className="summary-card">
         <h3>Total P&L</h3>
-        <p className={`number ${stats.totalPnL >= 0 ? 'positive' : 'negative'}`}>
+        <p
+          className={`number ${stats.totalPnL >= 0 ? 'positive' : 'negative'}`}
+        >
           ${stats.totalPnL.toFixed(2)}
         </p>
       </div>
       <div className="summary-card">
         <h3>Win Rate</h3>
-        <p className="number">{stats.winRate}%</p>
+        <p className="number">{(winRate * 100).toFixed(1)}%</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SummaryCards;
+export default SummaryCards

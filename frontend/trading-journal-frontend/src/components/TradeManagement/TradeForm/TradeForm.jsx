@@ -32,12 +32,18 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
     movingAverage4: false,
   })
 
+  const [validationError, setValidationError] = useState('')
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }))
+    // Clear validation error when user starts typing
+    if (validationError) {
+      setValidationError('')
+    }
   }
 
   const handleChecklistChange = (checklistItem) => {
@@ -50,6 +56,9 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    // Clear previous validation errors
+    setValidationError('')
+
     // Validate required fields
     if (
       !formData.symbol ||
@@ -58,7 +67,7 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
       !formData.stop_loss ||
       !formData.take_profit
     ) {
-      alert(
+      setValidationError(
         'Please fill in all required fields including Stop Loss and Take Profit'
       )
       return
@@ -67,9 +76,7 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
     // Validate trade position logic
     const validation = validateTradePosition(formData)
     if (!validation.isValid) {
-      alert(
-        `❌ Invalid Trade Position:\n\n${validation.error}\n\nPlease correct your Stop Loss and Take Profit levels.`
-      )
+      setValidationError(validation.error)
       return
     }
 
@@ -134,6 +141,9 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
 
         <div className="modal-body">
           {error && <div className="error-message">Error: {error.message}</div>}
+          {validationError && (
+            <div className="error-message">{validationError}</div>
+          )}
 
           <form className="trade-form" onSubmit={handleSubmit}>
             <TradeFormFields
@@ -161,7 +171,7 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
             Cancel
           </button>
           <button
-            type="submit"
+            type="button"
             className="btn btn-primary"
             onClick={handleSubmit}
             disabled={isLoading}

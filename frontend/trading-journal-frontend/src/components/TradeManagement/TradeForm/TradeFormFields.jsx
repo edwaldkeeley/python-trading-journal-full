@@ -1,5 +1,5 @@
-import React from 'react';
-import { TRADE_CONFIG } from '../../../constants/config';
+import React from 'react'
+import { TRADE_CONFIG } from '../../../constants/config'
 
 const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
   return (
@@ -66,7 +66,8 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
             disabled={isLoading}
           />
           <small className="help-text">
-            Lot size multiplier ({TRADE_CONFIG.LOT_SIZE.MIN} - {TRADE_CONFIG.LOT_SIZE.MAX}). Standard lot = 1, Mini lot = 0.1
+            Lot size multiplier ({TRADE_CONFIG.LOT_SIZE.MIN} -{' '}
+            {TRADE_CONFIG.LOT_SIZE.MAX}). Standard lot = 1, Mini lot = 0.1
           </small>
         </div>
       </div>
@@ -79,17 +80,16 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
           name="entry_price"
           value={formData.entry_price}
           onChange={onInputChange}
-          placeholder="150.00"
-          min="0.01"
-          step="0.01"
+          placeholder="1.0850"
+          min="0.0001"
+          step="0.0001"
           required
           disabled={isLoading}
         />
         <small className="help-text">
           {formData.side === 'buy'
             ? 'For BUY trades: Take Profit should be ABOVE this price, Stop Loss should be BELOW'
-            : 'For SELL trades: Take Profit should be BELOW this price, Stop Loss should be ABOVE'
-          }
+            : 'For SELL trades: Take Profit should be BELOW this price, Stop Loss should be ABOVE'}
         </small>
       </div>
 
@@ -102,17 +102,16 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
             name="stop_loss"
             value={formData.stop_loss}
             onChange={onInputChange}
-            placeholder={formData.side === 'buy' ? '145.00' : '155.00'}
-            min="0.01"
-            step="0.01"
+            placeholder={formData.side === 'buy' ? '1.0800' : '1.0900'}
+            min="0.0001"
+            step="0.0001"
             required
             disabled={isLoading}
           />
           <small className="help-text">
             {formData.side === 'buy'
               ? 'Must be BELOW entry price to limit losses'
-              : 'Must be ABOVE entry price to limit losses'
-            }
+              : 'Must be ABOVE entry price to limit losses'}
           </small>
         </div>
 
@@ -124,17 +123,16 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
             name="take_profit"
             value={formData.take_profit}
             onChange={onInputChange}
-            placeholder={formData.side === 'buy' ? '160.00' : '140.00'}
-            min="0.01"
-            step="0.01"
+            placeholder={formData.side === 'buy' ? '1.0900' : '1.0800'}
+            min="0.0001"
+            step="0.0001"
             required
             disabled={isLoading}
           />
           <small className="help-text">
             {formData.side === 'buy'
               ? 'Must be ABOVE entry price to make profit'
-              : 'Must be BELOW entry price to make profit'
-            }
+              : 'Must be BELOW entry price to make profit'}
           </small>
         </div>
       </div>
@@ -152,7 +150,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default TradeFormFields;
+export default TradeFormFields

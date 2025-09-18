@@ -111,9 +111,9 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                   </td>
                   <td>{trade.quantity}</td>
                   <td>{trade.lot_size}</td>
-                  <td>${Math.round(trade.entry_price)}</td>
-                  <td>${Math.round(trade.stop_loss)}</td>
-                  <td>${Math.round(trade.take_profit)}</td>
+                  <td>${parseFloat(trade.entry_price).toFixed(4)}</td>
+                  <td>${parseFloat(trade.stop_loss).toFixed(4)}</td>
+                  <td>${parseFloat(trade.take_profit).toFixed(4)}</td>
                   <td
                     className={`checklist-grade ${
                       trade.checklist_grade || 'no-grade'
@@ -123,23 +123,21 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                   </td>
                   <td className="notes-cell">
                     {trade.notes ? (
-                      <div className="notes-content">
+                      <div
+                        className="notes-content"
+                        onClick={() => {
+                          setNotesModalTrade(trade)
+                          setShowNotesModal(true)
+                        }}
+                        title="Click to view full notes"
+                      >
                         <span className="notes-preview">
                           {trade.notes.length > 30
                             ? `${trade.notes.substring(0, 30)}...`
                             : trade.notes}
                         </span>
                         {trade.notes.length > 30 && (
-                          <span
-                            className="notes-expand"
-                            title="Click to view full notes"
-                            onClick={() => {
-                              setNotesModalTrade(trade)
-                              setShowNotesModal(true)
-                            }}
-                          >
-                            📝
-                          </span>
+                          <span className="notes-expand">📝</span>
                         )}
                       </div>
                     ) : (
@@ -148,7 +146,7 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                   </td>
                   <td>
                     {trade.exit_price
-                      ? `$${Math.round(trade.exit_price)}`
+                      ? `$${parseFloat(trade.exit_price).toFixed(4)}`
                       : '-'}
                   </td>
                   <td className={`exit-reason ${trade.exit_reason || ''}`}>
@@ -171,19 +169,23 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                       <span
                         title={`P&L Breakdown: ${
                           trade.side === 'buy'
-                            ? `(${Math.round(trade.exit_price)} - ${Math.round(
-                                trade.entry_price
+                            ? `(${parseFloat(trade.exit_price).toFixed(
+                                4
+                              )} - ${parseFloat(trade.entry_price).toFixed(
+                                4
                               )}) × ${trade.quantity} × ${
                                 trade.lot_size
-                              } = $${Math.round(trade.pnl)}`
-                            : `(${Math.round(trade.entry_price)} - ${Math.round(
-                                trade.exit_price
+                              } = $${parseFloat(trade.pnl).toFixed(2)}`
+                            : `(${parseFloat(trade.entry_price).toFixed(
+                                4
+                              )} - ${parseFloat(trade.exit_price).toFixed(
+                                4
                               )}) × ${trade.quantity} × ${
                                 trade.lot_size
-                              } = $${Math.round(trade.pnl)}`
+                              } = $${parseFloat(trade.pnl).toFixed(2)}`
                         }`}
                       >
-                        ${Math.round(trade.pnl)}
+                        ${parseFloat(trade.pnl).toFixed(2)}
                       </span>
                     ) : (
                       '-'
