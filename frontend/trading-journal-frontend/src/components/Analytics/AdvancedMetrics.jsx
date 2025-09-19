@@ -58,16 +58,7 @@ const AdvancedMetrics = ({ trades = [] }) => {
     const winningTrades = pnls.filter((pnl) => pnl > 0)
     const losingTrades = pnls.filter((pnl) => pnl < 0)
 
-    // Debug PnL data (commented out for production)
-    // if (process.env.NODE_ENV === 'development') {
-    //   console.log('PnL Debug:', {
-    //     closedTrades: closedTrades.length,
-    //     pnls: pnls,
-    //     winningTrades: winningTrades.length,
-    //     losingTrades: losingTrades.length,
-    //     sampleTrade: closedTrades[0],
-    //   })
-    // }
+    // Calculate PnL metrics for advanced analytics
 
     const totalPnL = pnls.reduce((sum, pnl) => sum + pnl, 0)
     const totalWins = winningTrades.reduce((sum, pnl) => sum + pnl, 0)
@@ -187,14 +178,7 @@ const AdvancedMetrics = ({ trades = [] }) => {
 
   const metrics = calculateAdvancedMetrics(trades)
 
-  // Debug logging (commented out for production)
-  // if (process.env.NODE_ENV === 'development') {
-  //   console.log('Advanced Metrics Debug:', {
-  //     totalTrades: trades.length,
-  //     closedTrades: getClosedTrades(trades).length,
-  //     metrics,
-  //   })
-  // }
+  // Advanced metrics calculation complete
 
   // Convert win rate to decimal if it's a string percentage
   const winRate =

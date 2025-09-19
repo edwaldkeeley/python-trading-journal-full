@@ -10,13 +10,16 @@ const NotesModal = ({ isOpen, onClose, notes, tradeInfo }) => {
     <div
       className={`modal-overlay ${isClosing ? 'closing' : ''}`}
       onClick={handleClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notes-modal-title"
     >
       <div
         className={`modal notes-modal ${isClosing ? 'closing' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
-          <h2>Trade Notes</h2>
+          <h2 id="notes-modal-title">Trade Notes</h2>
           <button
             className="btn btn-icon btn-sm"
             onClick={handleClose}

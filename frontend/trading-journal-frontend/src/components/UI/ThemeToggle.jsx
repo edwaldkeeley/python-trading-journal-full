@@ -6,9 +6,12 @@ const ThemeToggle = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme()
   const [isAnimating, setIsAnimating] = useState(false)
 
-  const handleToggle = () => {
+  const handleToggle = (e) => {
     setIsAnimating(true)
     toggleTheme()
+
+    // Remove focus outline immediately after click
+    e.target.blur()
 
     // Reset animation after transition completes
     setTimeout(() => {

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import TradeFormFields from './TradeFormFields'
 import TradeChecklist from './TradeChecklist'
 import RiskRewardDisplay from './RiskRewardDisplay'
 import useModalAnimation from '../../../hooks/useModalAnimation'
+import { useScrollToModalError } from '../../../hooks/useScrollToTop'
 import {
   validateTradePosition,
   calculateChecklistScore,
@@ -33,6 +34,24 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
   })
 
   const [validationError, setValidationError] = useState('')
+  const errorRef = useRef(null)
+
+  // Scroll to modal top when there's an error
+  useScrollToModalError(!!(error || validationError), '.modal')
+
+  // Focus on error message when it appears
+  useEffect(() => {
+    if ((error || validationError) && errorRef.current) {
+      // Small delay to ensure the error message is rendered
+      setTimeout(() => {
+        errorRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest',
+        })
+      }, 100)
+    }
+  }, [error, validationError])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -123,13 +142,16 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
     <div
       className={`modal-overlay ${isClosing ? 'closing' : ''}`}
       onClick={handleClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-trade-title"
     >
       <div
         className={`modal ${isClosing ? 'closing' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
-          <h2>Add New Trade</h2>
+          <h2 id="add-trade-title">Add New Trade</h2>
           <button
             className="btn btn-icon btn-sm"
             onClick={handleClose}
@@ -140,9 +162,15 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
         </div>
 
         <div className="modal-body">
-          {error && <div className="error-message">Error: {error.message}</div>}
+          {error && (
+            <div ref={errorRef} className="error-message">
+              Error: {error.message}
+            </div>
+          )}
           {validationError && (
-            <div className="error-message">{validationError}</div>
+            <div ref={errorRef} className="error-message">
+              {validationError}
+            </div>
           )}
 
           <form className="trade-form" onSubmit={handleSubmit}>

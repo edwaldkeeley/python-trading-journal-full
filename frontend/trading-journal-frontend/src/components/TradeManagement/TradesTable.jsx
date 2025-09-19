@@ -3,6 +3,7 @@ import CloseTradeModal from './CloseTradeModal'
 import DeleteTradeModal from './DeleteTradeModal'
 import NotesModal from './NotesModal'
 import { Pagination } from '../UI'
+import useScrollToTop from '../../hooks/useScrollToTop'
 
 const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
   const [closeModalTrade, setCloseModalTrade] = useState(null)
@@ -22,6 +23,9 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const currentTrades = trades.slice(startIndex, endIndex)
+
+  // Scroll to top when modals open (for better UX)
+  useScrollToTop(showCloseModal || showDeleteModal || showNotesModal)
 
   // Handle page changes
   const handlePageChange = (page) => {
@@ -76,30 +80,31 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
           <table className="trades-table">
             <thead>
               <tr>
-                <th>Symbol</th>
-                <th>Side</th>
-                <th>Quantity</th>
-                <th>Lot Size</th>
-                <th>Entry Price</th>
-                <th>Stop Loss</th>
-                <th>Take Profit</th>
-                <th>Grade</th>
-                <th>Notes</th>
-                <th>Exit Price</th>
-                <th>Exit Reason</th>
-                <th>Entry Time</th>
-                <th>Exit Time</th>
-                <th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Side</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Lot Size</th>
+                <th scope="col">Entry Price</th>
+                <th scope="col">Stop Loss</th>
+                <th scope="col">Take Profit</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Exit Price</th>
+                <th scope="col">Exit Reason</th>
+                <th scope="col">Entry Time</th>
+                <th scope="col">Exit Time</th>
+                <th scope="col">
                   P&L
                   <span
                     className="info-tooltip"
                     title="P&L = (Exit Price - Entry Price) × Quantity × Lot Size"
+                    aria-label="Profit and Loss calculation formula"
                   >
                     ℹ️
                   </span>
                 </th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -129,7 +134,17 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                           setNotesModalTrade(trade)
                           setShowNotesModal(true)
                         }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            setNotesModalTrade(trade)
+                            setShowNotesModal(true)
+                          }
+                        }}
                         title="Click to view full notes"
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`View notes for trade ${trade.symbol} ${trade.side}`}
                       >
                         <span className="notes-preview">
                           {trade.notes.length > 30
@@ -201,6 +216,8 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                       <button
                         className="action-btn close-btn"
                         onClick={() => handleCloseTrade(trade)}
+                        aria-label={`Close trade ${trade.symbol} ${trade.side}`}
+                        title={`Close trade ${trade.symbol} ${trade.side}`}
                       >
                         Close
                       </button>
@@ -208,6 +225,8 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
                     <button
                       className="action-btn delete-btn"
                       onClick={() => handleDeleteTrade(trade)}
+                      aria-label={`Delete trade ${trade.symbol} ${trade.side}`}
+                      title={`Delete trade ${trade.symbol} ${trade.side}`}
                     >
                       Delete
                     </button>

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import useModalAnimation from '../../hooks/useModalAnimation'
+import { useScrollToModalError } from '../../hooks/useScrollToTop'
 
 const DeleteTradeModal = ({
   isOpen,
@@ -10,6 +11,24 @@ const DeleteTradeModal = ({
   error,
 }) => {
   const { isClosing, handleClose } = useModalAnimation(onClose)
+  const errorRef = useRef(null)
+
+  // Scroll to modal top when there's an error
+  useScrollToModalError(!!error, '.modal')
+
+  // Focus on error message when it appears
+  useEffect(() => {
+    if (error && errorRef.current) {
+      // Small delay to ensure the error message is rendered
+      setTimeout(() => {
+        errorRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest',
+        })
+      }, 100)
+    }
+  }, [error])
 
   if (!isOpen || !trade) return null
 
@@ -17,13 +36,16 @@ const DeleteTradeModal = ({
     <div
       className={`modal-overlay ${isClosing ? 'closing' : ''}`}
       onClick={handleClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-trade-title"
     >
       <div
         className={`modal ${isClosing ? 'closing' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
-          <h2>Delete Trade</h2>
+          <h2 id="delete-trade-title">Delete Trade</h2>
           <button
             className="btn btn-icon btn-sm"
             onClick={handleClose}
@@ -34,7 +56,11 @@ const DeleteTradeModal = ({
         </div>
 
         <div className="modal-body">
-          {error && <div className="error-message">{error}</div>}
+          {error && (
+            <div ref={errorRef} className="error-message">
+              {error}
+            </div>
+          )}
 
           <div className="trade-info">
             <p>

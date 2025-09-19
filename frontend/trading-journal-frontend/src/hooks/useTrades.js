@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'
+  import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1/'
 
 // Fetch all trades with pagination
 export const useTrades = (limit = 500, offset = 0) => {
@@ -9,7 +9,7 @@ export const useTrades = (limit = 500, offset = 0) => {
     queryKey: ['trades', limit, offset],
     queryFn: async () => {
       const response = await fetch(
-        `${API_BASE_URL}/trades?limit=${limit}&offset=${offset}`
+        `${API_BASE_URL}trades?limit=${limit}&offset=${offset}`
       )
       if (!response.ok) {
         throw new Error(
@@ -36,7 +36,7 @@ export const useAddTrade = () => {
 
   return useMutation({
     mutationFn: async (tradeData) => {
-      const response = await fetch(`${API_BASE_URL}/trades`, {
+      const response = await fetch(`${API_BASE_URL}trades`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export const useUpdateTrade = () => {
 
   return useMutation({
     mutationFn: async ({ tradeId, tradeData }) => {
-      const response = await fetch(`${API_BASE_URL}/trades/${tradeId}`, {
+      const response = await fetch(`${API_BASE_URL}trades/${tradeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export const useDeleteTrade = () => {
 
   return useMutation({
     mutationFn: async (tradeId) => {
-      const response = await fetch(`${API_BASE_URL}/trades/${tradeId}`, {
+      const response = await fetch(`${API_BASE_URL}trades/${tradeId}`, {
         method: 'DELETE',
       })
 
@@ -145,7 +145,7 @@ export const useCloseTrade = () => {
   return useMutation({
     mutationFn: async ({ tradeId, exitPrice }) => {
       // First get the current trade to calculate P&L
-      const tradeResponse = await fetch(`${API_BASE_URL}/trades/${tradeId}`)
+      const tradeResponse = await fetch(`${API_BASE_URL}trades/${tradeId}`)
       if (!tradeResponse.ok) {
         throw new Error(`Failed to fetch trade: ${tradeResponse.status}`)
       }
@@ -165,17 +165,7 @@ export const useCloseTrade = () => {
       const quantity = parseFloat(trade.quantity)
       const lotSize = parseFloat(trade.lot_size || 1)
 
-      // Debug: Log all values being used in P&L calculation
-      console.log('=== P&L CALCULATION DEBUG ===')
-      console.log('Trade ID:', trade.id)
-      console.log('Side:', trade.side)
-      console.log('Entry Price:', entryPrice)
-      console.log('Exit Price (input):', exitPrice)
-      console.log('Adjusted Exit Price:', adjustedExitPrice)
-      console.log('Quantity:', quantity)
-      console.log('Lot Size:', lotSize)
-      console.log('Take Profit:', takeProfit)
-      console.log('Stop Loss:', stopLoss)
+      // P&L calculation for trade closure
 
       if (trade.side === 'buy') {
         // For buy trades (long positions)
@@ -210,9 +200,7 @@ export const useCloseTrade = () => {
         const gross = priceDifference * quantity * lotSize
         pnl = gross - trade.fees // Subtract fees like backend
 
-        console.log(
-          `P&L Calculation (BUY): ${priceDifference} × ${quantity} × ${lotSize} = ${gross} (gross) - ${trade.fees} (fees) = ${pnl}`
-        )
+        // P&L calculation for buy trade
 
         // Ensure P&L is a valid number
         if (isNaN(pnl) || !isFinite(pnl)) {
@@ -232,9 +220,7 @@ export const useCloseTrade = () => {
         const gross = priceDifference * quantity * lotSize
         pnl = gross - trade.fees // Subtract fees like backend
 
-        console.log(
-          `P&L Calculation (SELL): ${priceDifference} × ${quantity} × ${lotSize} = ${gross} (gross) - ${trade.fees} (fees) = ${pnl}`
-        )
+        // P&L calculation for sell trade
 
         // Ensure P&L is a valid number
         if (isNaN(pnl) || !isFinite(pnl)) {
@@ -264,11 +250,9 @@ export const useCloseTrade = () => {
         lot_size: lotSize, // Include lot_size to ensure it's preserved
       }
 
-      console.log('=== FINAL P&L RESULT ===')
-      console.log('Final P&L:', pnl)
-      console.log('Update Data:', updateData)
+      // Final P&L calculation complete
 
-      const response = await fetch(`${API_BASE_URL}/trades/${tradeId}`, {
+      const response = await fetch(`${API_BASE_URL}trades/${tradeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -321,7 +305,7 @@ export const useClearAllTrades = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/trades/clear`, {
+      const response = await fetch(`${API_BASE_URL}trades/clear`, {
         method: 'DELETE',
       })
 
