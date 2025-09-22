@@ -237,3 +237,4 @@ describe('TradeForm', () => {
     expect(mockOnSubmit).not.toHaveBeenCalled()
   })
 })
+

@@ -20,12 +20,14 @@ A modern trading journal to track, analyze, and improve your trading performance
 ## 🚀 Quick Start
 
 1. **Backend** (FastAPI)
+
    ```bash
    cd backend
    docker-compose up -d
    ```
 
 2. **Frontend** (React)
+
    ```bash
    cd frontend/trading-journal-frontend
    npm install

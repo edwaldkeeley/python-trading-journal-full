@@ -5,7 +5,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
   return (
     <>
       <div className="form-group">
-        <label htmlFor="symbol">Symbol: *</label>
+        <label htmlFor="symbol">Symbol: </label>
         <input
           id="symbol"
           type="text"
@@ -19,7 +19,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="side">Side: *</label>
+        <label htmlFor="side">Side: </label>
         <select
           id="side"
           name="side"
@@ -35,7 +35,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="quantity">Quantity: *</label>
+          <label htmlFor="quantity">Quantity: </label>
           <input
             id="quantity"
             type="number"
@@ -51,7 +51,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="lot_size">Lot Size: *</label>
+          <label htmlFor="lot_size">Lot Size: </label>
           <input
             id="lot_size"
             type="number"
@@ -73,7 +73,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="entry_price">Entry Price: *</label>
+        <label htmlFor="entry_price">Entry Price: </label>
         <input
           id="entry_price"
           type="number"
@@ -95,7 +95,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="stop_loss">Stop Loss: *</label>
+          <label htmlFor="stop_loss">Stop Loss: </label>
           <input
             id="stop_loss"
             type="number"
@@ -116,7 +116,7 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="take_profit">Take Profit: *</label>
+          <label htmlFor="take_profit">Take Profit: </label>
           <input
             id="take_profit"
             type="number"

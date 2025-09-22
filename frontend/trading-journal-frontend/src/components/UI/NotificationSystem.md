@@ -350,3 +350,4 @@ console.log('Modal in DOM:', document.querySelector('.notification-modal'))
 - **Sound notifications** - Audio feedback for important messages
 - **Notification history** - Keep track of recent notifications
 - **Custom animations** - More sophisticated entrance/exit animations
+

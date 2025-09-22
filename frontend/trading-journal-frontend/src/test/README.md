@@ -212,3 +212,4 @@ For performance-critical components, consider:
 - **Visual Regression Testing**: Screenshot comparison for UI changes
 - **Performance Testing**: Bundle size and runtime performance monitoring
 - **Accessibility Testing**: Automated a11y testing with axe-core
+

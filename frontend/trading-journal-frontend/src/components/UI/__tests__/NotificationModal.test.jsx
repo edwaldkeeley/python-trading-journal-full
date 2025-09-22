@@ -306,3 +306,4 @@ describe('NotificationModal', () => {
     expect(confirmButton).toHaveClass('btn-primary')
   })
 })
+

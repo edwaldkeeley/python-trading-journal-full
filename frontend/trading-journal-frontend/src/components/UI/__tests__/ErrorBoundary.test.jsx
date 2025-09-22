@@ -182,3 +182,4 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('Error Details:')).toBeInTheDocument()
   })
 })
+

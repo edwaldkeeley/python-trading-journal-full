@@ -55,15 +55,18 @@ const TradeChecklist = ({ checklistData, onChecklistChange }) => {
             className={`checklist-item ${
               checklistData[item.key] ? 'checked' : ''
             }`}
-            onClick={() => onChecklistChange(item.key)}
           >
-            <label className="checkbox-label">
+            <label className="checkbox-label" htmlFor={`checkbox-${item.key}`}>
               <input
                 type="checkbox"
                 checked={checklistData[item.key]}
-                onChange={() => onChecklistChange(item.key)}
+                onChange={(e) => {
+                  console.log('Checkbox clicked:', item.key, e.target.checked)
+                  onChecklistChange(item.key)
+                }}
+                name={item.key}
+                id={`checkbox-${item.key}`}
               />
-              <span className="checkmark"></span>
               <div className="checklist-content">
                 <span className="checklist-label">{item.label}</span>
                 <small className="checklist-description">
