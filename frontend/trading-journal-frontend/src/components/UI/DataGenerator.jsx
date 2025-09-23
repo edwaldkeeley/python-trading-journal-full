@@ -73,7 +73,6 @@ const DataGenerator = ({ onGenerateTrades, isOpen, onClose }) => {
       onGenerateTrades(trades)
       onClose()
     } catch (error) {
-      console.error('Error generating trades:', error)
       // Error generating trades - handled by error state
     } finally {
       setIsGenerating(false)

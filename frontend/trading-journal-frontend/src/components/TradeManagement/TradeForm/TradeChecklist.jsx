@@ -61,7 +61,6 @@ const TradeChecklist = ({ checklistData, onChecklistChange }) => {
                 type="checkbox"
                 checked={checklistData[item.key]}
                 onChange={(e) => {
-                  console.log('Checkbox clicked:', item.key, e.target.checked)
                   onChecklistChange(item.key)
                 }}
                 name={item.key}

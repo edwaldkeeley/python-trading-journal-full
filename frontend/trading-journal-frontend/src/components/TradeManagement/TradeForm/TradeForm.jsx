@@ -132,7 +132,6 @@ const TradeForm = ({ isOpen, onClose, onSubmit, isLoading, error }) => {
       onClose()
     } catch (error) {
       // Error is handled by the mutation
-      console.error('Error submitting trade:', error)
     }
   }
 

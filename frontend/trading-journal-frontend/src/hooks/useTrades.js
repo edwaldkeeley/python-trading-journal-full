@@ -204,14 +204,6 @@ export const useCloseTrade = () => {
 
         // Ensure P&L is a valid number
         if (isNaN(pnl) || !isFinite(pnl)) {
-          console.error('Invalid P&L calculation detected:', {
-            priceDifference,
-            quantity,
-            lotSize,
-            gross,
-            fees: trade.fees,
-            pnl,
-          })
           pnl = 0
         }
       } else {
@@ -224,14 +216,6 @@ export const useCloseTrade = () => {
 
         // Ensure P&L is a valid number
         if (isNaN(pnl) || !isFinite(pnl)) {
-          console.error('Invalid P&L calculation detected:', {
-            priceDifference,
-            quantity,
-            lotSize,
-            gross,
-            fees: trade.fees,
-            pnl,
-          })
           pnl = 0
         }
       }

@@ -16,7 +16,6 @@ import { TradesTable } from '../TradeManagement'
 import { TradeForm } from '../TradeManagement'
 import {
   Loading,
-  Error,
   ErrorBoundary,
   DataGenerator,
   TradeEraser,
@@ -69,7 +68,6 @@ const Dashboard = () => {
         'The trade has been successfully removed from your journal.'
       )
     } catch (error) {
-      console.error('Error deleting trade:', error)
       showError(
         'Failed to Delete Trade',
         error.message ||
@@ -87,7 +85,6 @@ const Dashboard = () => {
         'The trade has been closed and P&L has been calculated.'
       )
     } catch (error) {
-      console.error('Error closing trade:', error)
       showError(
         'Failed to Close Trade',
         error.message ||
@@ -106,7 +103,6 @@ const Dashboard = () => {
         'All trades have been successfully removed from your journal.'
       )
     } catch (error) {
-      console.error('Error clearing all trades:', error)
       showError(
         'Failed to Clear Trades',
         error.message ||
@@ -154,7 +150,6 @@ const Dashboard = () => {
         }`
       )
     } catch (error) {
-      console.error('Error handling generated trades:', error)
       showError(
         'Failed to Generate Data',
         error.message ||
@@ -192,19 +187,6 @@ const Dashboard = () => {
   }
 
   if (error) {
-    // Debug: Log the full error object to help identify the issue
-    console.error('Trading Journal Error Details:', {
-      error,
-      errorType: typeof error,
-      errorKeys: Object.keys(error),
-      errorMessage: error.message,
-      errorStatus: error.status,
-      errorResponse: error.response,
-      errorCode: error.code,
-      errorConfig: error.config,
-      fullError: JSON.stringify(error, null, 2),
-    })
-
     // Create a comprehensive error message
     const getDetailedErrorMessage = (error) => {
       let errorDetails = []

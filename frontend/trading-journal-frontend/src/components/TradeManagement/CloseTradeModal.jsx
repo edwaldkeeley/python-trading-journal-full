@@ -50,7 +50,6 @@ const CloseTradeModal = ({ isOpen, onClose, onSubmit, trade }) => {
       setError('')
       onClose()
     } catch (error) {
-      console.error('Error closing trade:', error)
       setError(error.message || 'Failed to close trade. Please try again.')
     } finally {
       setIsLoading(false)

@@ -5,7 +5,9 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
   return (
     <>
       <div className="form-group">
-        <label htmlFor="symbol">Symbol: </label>
+        <label htmlFor="symbol">
+          Symbol: <span className="required-asterisk">*</span>
+        </label>
         <input
           id="symbol"
           type="text"
@@ -19,7 +21,9 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="side">Side: </label>
+        <label htmlFor="side">
+          Side: <span className="required-asterisk">*</span>
+        </label>
         <select
           id="side"
           name="side"
@@ -35,7 +39,9 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="quantity">Quantity: </label>
+          <label htmlFor="quantity">
+            Quantity: <span className="required-asterisk">*</span>
+          </label>
           <input
             id="quantity"
             type="number"
@@ -51,7 +57,9 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="lot_size">Lot Size: </label>
+          <label htmlFor="lot_size">
+            Lot Size: <span className="required-asterisk">*</span>
+          </label>
           <input
             id="lot_size"
             type="number"
@@ -65,15 +73,13 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
             required
             disabled={isLoading}
           />
-          <small className="help-text">
-            Lot size multiplier ({TRADE_CONFIG.LOT_SIZE.MIN} -{' '}
-            {TRADE_CONFIG.LOT_SIZE.MAX}). Standard lot = 1, Mini lot = 0.1
-          </small>
         </div>
       </div>
 
       <div className="form-group">
-        <label htmlFor="entry_price">Entry Price: </label>
+        <label htmlFor="entry_price">
+          Entry Price: <span className="required-asterisk">*</span>
+        </label>
         <input
           id="entry_price"
           type="number"
@@ -86,16 +92,13 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
           required
           disabled={isLoading}
         />
-        <small className="help-text">
-          {formData.side === 'buy'
-            ? 'For BUY trades: Take Profit should be ABOVE this price, Stop Loss should be BELOW'
-            : 'For SELL trades: Take Profit should be BELOW this price, Stop Loss should be ABOVE'}
-        </small>
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="stop_loss">Stop Loss: </label>
+          <label htmlFor="stop_loss">
+            Stop Loss: <span className="required-asterisk">*</span>
+          </label>
           <input
             id="stop_loss"
             type="number"
@@ -108,15 +111,12 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
             required
             disabled={isLoading}
           />
-          <small className="help-text">
-            {formData.side === 'buy'
-              ? 'Must be BELOW entry price to limit losses'
-              : 'Must be ABOVE entry price to limit losses'}
-          </small>
         </div>
 
         <div className="form-group">
-          <label htmlFor="take_profit">Take Profit: </label>
+          <label htmlFor="take_profit">
+            Take Profit: <span className="required-asterisk">*</span>
+          </label>
           <input
             id="take_profit"
             type="number"
@@ -129,11 +129,6 @@ const TradeFormFields = ({ formData, onInputChange, isLoading }) => {
             required
             disabled={isLoading}
           />
-          <small className="help-text">
-            {formData.side === 'buy'
-              ? 'Must be ABOVE entry price to make profit'
-              : 'Must be BELOW entry price to make profit'}
-          </small>
         </div>
       </div>
 

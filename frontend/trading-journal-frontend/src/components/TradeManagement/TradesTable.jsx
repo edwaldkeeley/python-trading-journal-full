@@ -56,7 +56,6 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
       setShowDeleteModal(false)
       setDeleteModalTrade(null)
     } catch (error) {
-      console.error('Error deleting trade:', error)
       // Error is handled by the mutation
     }
   }
@@ -67,7 +66,6 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
       setShowCloseModal(false)
       setCloseModalTrade(null)
     } catch (error) {
-      console.error('Error closing trade:', error)
       throw error
     }
   }
