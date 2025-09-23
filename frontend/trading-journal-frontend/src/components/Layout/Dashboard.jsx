@@ -9,10 +9,7 @@ import {
 import { countOpenTrades, getClosedTrades } from '../../utils/tradeUtils'
 import useScrollToTop from '../../hooks/useScrollToTop'
 import useNotification from '../../hooks/useNotification'
-import Header from './Header'
-import SummaryCards from './SummaryCards'
-import AnalyticsContainer from '../Analytics/AnalyticsContainer'
-import { TradesTable } from '../TradeManagement'
+import Sidebar from './Sidebar'
 import { TradeForm } from '../TradeManagement'
 import {
   Loading,
@@ -21,11 +18,18 @@ import {
   TradeEraser,
   NotificationModal,
 } from '../UI'
+import { DashboardPage, AnalyticsPage, TradesPage } from '../Pages'
 
 const Dashboard = () => {
+  const [currentPage, setCurrentPage] = useState('dashboard')
   const [showAddForm, setShowAddForm] = useState(false)
   const [showDataGenerator, setShowDataGenerator] = useState(false)
   const [showTradeEraser, setShowTradeEraser] = useState(false)
+
+  // Page change handler
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
 
   // Notification system
   const { notification, showSuccess, showError, hideNotification } =
@@ -329,56 +333,84 @@ const Dashboard = () => {
     )
   }
 
+  // Render current page
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return (
+          <DashboardPage
+            onAddTrade={() => setShowAddForm(true)}
+            onGenerateData={() => setShowDataGenerator(true)}
+            onClearAll={() => setShowTradeEraser(true)}
+          />
+        )
+      case 'analytics':
+        return <AnalyticsPage />
+      case 'trades':
+        return (
+          <TradesPage
+            onCloseTrade={handleCloseTrade}
+            onDeleteTrade={handleDeleteTrade}
+          />
+        )
+      default:
+        return (
+          <DashboardPage
+            onAddTrade={() => setShowAddForm(true)}
+            onGenerateData={() => setShowDataGenerator(true)}
+            onClearAll={() => setShowTradeEraser(true)}
+          />
+        )
+    }
+  }
+
   return (
-    <div className="dashboard">
-      <Header
+    <div className="app-layout">
+      <Sidebar
         onAddTrade={() => setShowAddForm(true)}
         onGenerateData={() => setShowDataGenerator(true)}
         onClearAll={() => setShowTradeEraser(true)}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
       />
-      <SummaryCards stats={stats} />
+      <main className="main-content">
+        {renderCurrentPage()}
 
-      <AnalyticsContainer trades={trades} />
-      <TradesTable
-        trades={trades}
-        onCloseTrade={handleCloseTrade}
-        onDeleteTrade={handleDeleteTrade}
-      />
+        <TradeForm
+          isOpen={showAddForm}
+          onClose={() => setShowAddForm(false)}
+          onSubmit={handleAddTrade}
+          isLoading={addTradeMutation.isPending}
+          error={addTradeMutation.error}
+        />
 
-      <TradeForm
-        isOpen={showAddForm}
-        onClose={() => setShowAddForm(false)}
-        onSubmit={handleAddTrade}
-        isLoading={addTradeMutation.isPending}
-        error={addTradeMutation.error}
-      />
+        <DataGenerator
+          isOpen={showDataGenerator}
+          onClose={() => setShowDataGenerator(false)}
+          onGenerateTrades={handleGenerateTrades}
+        />
 
-      <DataGenerator
-        isOpen={showDataGenerator}
-        onClose={() => setShowDataGenerator(false)}
-        onGenerateTrades={handleGenerateTrades}
-      />
+        <TradeEraser
+          isOpen={showTradeEraser}
+          onClose={() => setShowTradeEraser(false)}
+          onConfirm={handleClearAllTrades}
+          isLoading={clearAllTradesMutation.isPending}
+        />
 
-      <TradeEraser
-        isOpen={showTradeEraser}
-        onClose={() => setShowTradeEraser(false)}
-        onConfirm={handleClearAllTrades}
-        isLoading={clearAllTradesMutation.isPending}
-      />
-
-      <NotificationModal
-        isOpen={notification.isOpen}
-        onClose={hideNotification}
-        type={notification.type}
-        title={notification.title}
-        message={notification.message}
-        confirmText={notification.confirmText}
-        showCancel={notification.showCancel}
-        cancelText={notification.cancelText}
-        onConfirm={notification.onConfirm}
-        onCancel={notification.onCancel}
-        isLoading={notification.isLoading}
-      />
+        <NotificationModal
+          isOpen={notification.isOpen}
+          onClose={hideNotification}
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          confirmText={notification.confirmText}
+          showCancel={notification.showCancel}
+          cancelText={notification.cancelText}
+          onConfirm={notification.onConfirm}
+          onCancel={notification.onCancel}
+          isLoading={notification.isLoading}
+        />
+      </main>
     </div>
   )
 }

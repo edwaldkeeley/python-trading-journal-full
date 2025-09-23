@@ -15,7 +15,7 @@ const TradesTable = ({ trades, onCloseTrade, onDeleteTrade }) => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(50)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
 
   // Calculate pagination values
   const totalItems = trades.length
